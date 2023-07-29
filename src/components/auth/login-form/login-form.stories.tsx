@@ -14,6 +14,6 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    onSubmit: (data: LoginFormData) => console.(data),
+    onSubmit: (data: LoginFormData) => console.log(data),
   },
 }
