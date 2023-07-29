@@ -1,0 +1,71 @@
+.root {
+  width: 100%;
+}
+
+.fieldContainer {
+  position: relative;
+  width: 100%;
+}
+
+.field {
+  width: 100%;
+  padding: 6px 12px;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--color-light-100);
+
+  background: transparent;
+  border: 1px solid var(--color-dark-300);
+  outline: 0;
+
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: var(--color-dark-100);
+  }
+
+  &:focus-visible {
+    border-color: var(--color-info-700);
+    outline: 1px solid var(--color-info-700);
+  }
+
+  &:hover {
+    background: var(--color-dark-700);
+  }
+
+  &.error {
+    color: var(--color-danger-300);
+    border-color: var(--color-danger-300);
+  }
+}
+
+.label {
+  margin-bottom: 1px;
+  color: var(--color-dark-100);
+}
+
+.showPassword {
+  cursor: pointer;
+
+  position: absolute;
+  top: 50%;
+  right: 0;
+  bottom: 50%;
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+  outline: 0;
+
+  &:focus-visible {
+    outline: var(--outline-focus);
+  }
+}
