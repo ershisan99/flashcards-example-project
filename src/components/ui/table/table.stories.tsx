@@ -1,6 +1,19 @@
+import { useMemo, useState } from 'react'
+
 import { Meta } from '@storybook/react'
 
-import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeadCell, TableRow } from './'
+import {
+  Column,
+  Sort,
+  Table,
+  TableBody,
+  TableCell,
+  TableEmpty,
+  TableHead,
+  TableHeadCell,
+  TableHeader,
+  TableRow,
+} from './'
 
 import { Typography } from '@/components'
 
@@ -122,7 +135,89 @@ export const WithMapMethod = {
     ),
   },
 }
+const data2 = [
+  {
+    title: 'Project A',
+    cardsCount: 10,
+    updated: '2023-07-07',
+    createdBy: 'John Doe',
+  },
+  {
+    title: 'Project B',
+    cardsCount: 5,
+    updated: '2023-07-06',
+    createdBy: 'Jane Smith',
+  },
+  {
+    title: 'Project C',
+    cardsCount: 8,
+    updated: '2023-07-05',
+    createdBy: 'Alice Johnson',
+  },
+  {
+    title: 'Project D',
+    cardsCount: 3,
+    updated: '2023-07-07',
+    createdBy: 'Bob Anderson',
+  },
+  {
+    title: 'Project E',
+    cardsCount: 12,
+    updated: '2023-07-04',
+    createdBy: 'Emma Davis',
+  },
+]
 
+const columns: Array<Column> = [
+  {
+    key: 'name',
+    title: 'Name',
+    sortable: true,
+  },
+  {
+    key: 'cardsCount',
+    title: 'Cards',
+    sortable: true,
+  },
+  {
+    key: 'updated',
+    title: 'Last Updated',
+  },
+  {
+    key: 'createdBy',
+    title: 'Created by',
+  },
+]
+
+export const WithSort = {
+  render: () => {
+    const [sort, setSort] = useState<Sort>(null)
+    const sortedString = useMemo(() => {
+      if (!sort) return null
+
+      return `${sort.key}-${sort.direction}`
+    }, [sort])
+
+    console.log(sortedString)
+
+    return (
+      <table>
+        <TableHeader columns={columns} sort={sort} onSort={setSort} />
+        <tbody>
+          {data2.map(item => (
+            <tr key={item.title}>
+              <td>{item.title}</td>
+              <td>{item.cardsCount}</td>
+              <td>{item.updated}</td>
+              <td>{item.createdBy}</td>
+              <td>icons...</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  },
+}
 export const Empty = {
   render: () => <TableEmpty />,
 }

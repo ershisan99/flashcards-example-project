@@ -20,7 +20,52 @@ export const TableHead = forwardRef<ElementRef<'thead'>, ComponentPropsWithoutRe
     return <thead {...rest} ref={ref} />
   }
 )
+export type Sort = {
+  key: string
+  direction: 'asc' | 'desc'
+} | null
 
+export type Column = {
+  key: string
+  title: string
+  sortable?: boolean
+}
+export const TableHeader: FC<
+  Omit<
+    ComponentPropsWithoutRef<'thead'> & {
+      columns: Column[]
+      sort?: Sort
+      onSort?: (sort: Sort) => void
+    },
+    'children'
+  >
+> = ({ columns, sort, onSort, ...restProps }) => {
+  const handleSort = (key: string, sortable?: boolean) => () => {
+    if (!onSort || !sortable) return
+
+    if (sort?.key !== key) return onSort({ key, direction: 'asc' })
+
+    if (sort.direction === 'desc') return onSort(null)
+
+    return onSort({
+      key,
+      direction: sort?.direction === 'asc' ? 'desc' : 'asc',
+    })
+  }
+
+  return (
+    <thead {...restProps}>
+      <tr>
+        {columns.map(({ title, key, sortable }) => (
+          <th key={key} onClick={handleSort(key, sortable)}>
+            {title}
+            {sort && sort.key === key && <span>{sort.direction === 'asc' ? '▲' : '▼'}</span>}
+          </th>
+        ))}
+      </tr>
+    </thead>
+  )
+}
 export const TableBody = forwardRef<ElementRef<'tbody'>, ComponentPropsWithoutRef<'tbody'>>(
   ({ ...rest }, ref) => {
     return <tbody {...rest} ref={ref} />
