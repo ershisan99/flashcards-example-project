@@ -8,11 +8,16 @@ import { Button, Card, ControlledCheckbox, ControlledTextField, Typography } fro
 
 import s from './sign-in.module.scss'
 
-const schema = z.object({
+export const emailSchema = z.object({
   email: z.string().email('Invalid email address').nonempty('Enter email'),
-  password: z.string().nonempty('Enter password'),
-  rememberMe: z.boolean().optional(),
 })
+
+const schema = z
+  .object({
+    password: z.string().nonempty('Enter password'),
+    rememberMe: z.boolean().optional(),
+  })
+  .merge(emailSchema)
 
 type FormType = z.infer<typeof schema>
 
