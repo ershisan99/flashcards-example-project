@@ -8,9 +8,9 @@ import { Button, Card, ControlledTextField, Typography } from '../../ui'
 
 import s from './recover-password.module.scss'
 
-import { emailSchema } from '@/components'
-
-const schema = emailSchema
+const schema = z.object({
+  email: z.string().email('Invalid email address').nonempty('Enter email'),
+})
 
 type FormType = z.infer<typeof schema>
 

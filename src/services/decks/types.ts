@@ -11,6 +11,7 @@ export type GetDecksArgs = PaginatedRequest<{
 export type CreateDeckArgs = {
   name: string
 }
+export type DeleteDeckArgs = Pick<Deck, 'id'>
 export interface Author {
   id: string
   name: string

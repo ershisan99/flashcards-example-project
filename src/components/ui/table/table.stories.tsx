@@ -198,8 +198,6 @@ export const WithSort = {
       return `${sort.key}-${sort.direction}`
     }, [sort])
 
-    console.log(sortedString)
-
     return (
       <table>
         <TableHeader columns={columns} sort={sort} onSort={setSort} />

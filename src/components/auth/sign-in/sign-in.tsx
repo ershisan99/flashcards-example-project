@@ -8,21 +8,17 @@ import { Button, Card, ControlledCheckbox, ControlledTextField, Typography } fro
 
 import s from './sign-in.module.scss'
 
-export const emailSchema = z.object({
+const schema = z.object({
+  password: z.string().nonempty('Enter password'),
   email: z.string().email('Invalid email address').nonempty('Enter email'),
+  rememberMe: z.boolean().optional(),
 })
-
-const schema = z
-  .object({
-    password: z.string().nonempty('Enter password'),
-    rememberMe: z.boolean().optional(),
-  })
-  .merge(emailSchema)
 
 type FormType = z.infer<typeof schema>
 
 type Props = {
   onSubmit: (data: FormType) => void
+  isSubmitting?: boolean
 }
 
 export const SignIn = (props: Props) => {
@@ -76,7 +72,7 @@ export const SignIn = (props: Props) => {
           >
             Forgot Password?
           </Typography>
-          <Button className={s.button} fullWidth type={'submit'}>
+          <Button className={s.button} fullWidth type={'submit'} disabled={props.isSubmitting}>
             Sign In
           </Button>
         </form>

@@ -9,14 +9,12 @@ import { Button, Card, ControlledTextField, Typography } from '../../ui'
 
 import s from './sign-up.module.scss'
 
-import { emailSchema } from '@/components'
-
 const schema = z
   .object({
     password: z.string().nonempty('Enter password'),
     passwordConfirmation: z.string().nonempty('Confirm your password'),
+    email: z.string().email('Invalid email address').nonempty('Enter email'),
   })
-  .merge(emailSchema)
   .superRefine((data, ctx) => {
     if (data.password !== data.passwordConfirmation) {
       ctx.addIssue({
