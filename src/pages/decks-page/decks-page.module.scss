@@ -1,0 +1,17 @@
+.root {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.filters {
+  display: flex;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 16px;
+  margin-bottom: 16px;
+}

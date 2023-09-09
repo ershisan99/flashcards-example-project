@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.root {
+  touch-action: none;
+  user-select: none;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+}
+
+.track {
+  position: relative;
+
+  width: 100%;
+  height: 4px;
+
+  opacity: 0.5;
+  background-color: var(--color-accent-500);
+  border-radius: 2px;
+}
+
+.range {
+  position: absolute;
+  height: 100%;
+  background-color: var(--color-accent-500);
+}
+
+.thumb {
+  touch-action: pan-x;
+  cursor: pointer;
+
+  display: block;
+
+  width: 16px;
+  height: 16px;
+
+  background-color: var(--color-light-100);
+  border-radius: 9999px;
+
+  transition: transform 0.2s ease-in-out;
+}
