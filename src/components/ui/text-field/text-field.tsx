@@ -4,7 +4,7 @@ import { clsx } from 'clsx'
 
 import s from './text-field.module.scss'
 
-import { VisibilityOff, Eye } from '@/assets'
+import { VisibilityOff, Eye, Search } from '@/assets'
 import { Typography } from '@/components'
 
 export type TextFieldProps = {
@@ -13,6 +13,7 @@ export type TextFieldProps = {
   labelProps?: ComponentProps<'label'>
   errorMessage?: string
   label?: string
+  search?: boolean
 } & ComponentPropsWithoutRef<'input'>
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
@@ -27,6 +28,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       label,
       onChange,
       onValueChange,
+      search,
       ...restProps
     },
     ref
@@ -45,9 +47,10 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const classNames = {
       root: clsx(s.root, containerProps?.className),
       fieldContainer: clsx(s.fieldContainer),
-      field: clsx(s.field, !!errorMessage && s.error, className),
+      field: clsx(s.field, !!errorMessage && s.error, search && s.hasLeadingIcon, className),
       label: clsx(s.label, labelProps?.className),
       error: clsx(s.error),
+      leadingIcon: s.leadingIcon,
     }
 
     return (
@@ -58,6 +61,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           </Typography>
         )}
         <div className={classNames.fieldContainer}>
+          {search && <Search className={classNames.leadingIcon} />}
           <input
             className={classNames.field}
             placeholder={placeholder}

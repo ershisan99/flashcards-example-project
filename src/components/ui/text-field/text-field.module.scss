@@ -40,11 +40,36 @@
     color: var(--color-danger-300);
     border-color: var(--color-danger-300);
   }
+
+  &.hasLeadingIcon {
+    padding-left: 41px;
+  }
 }
 
 .label {
   margin-bottom: 1px;
   color: var(--color-dark-100);
+}
+
+.leadingIcon {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  left: 0;
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+  margin-left: 12px;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+  outline: 0;
+
+  &:focus-visible {
+    outline: var(--outline-focus);
+  }
 }
 
 .showPassword {
