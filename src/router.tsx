@@ -8,6 +8,8 @@ import {
 
 import { SignInPage, DecksPage } from './pages'
 
+import { DeckPage } from '@/pages/deck-page/deck-page.tsx'
+
 const publicRoutes: RouteObject[] = [
   {
     element: <Outlet />,
@@ -24,6 +26,10 @@ const privateRoutes: RouteObject[] = [
   {
     path: '/',
     element: <DecksPage />,
+  },
+  {
+    path: '/decks/:deckId',
+    element: <DeckPage />,
   },
 ]
 

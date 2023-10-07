@@ -2,46 +2,15 @@ import { useState } from 'react'
 
 import s from './decks-page.module.scss'
 
-import {
-  Button,
-  Page,
-  Typography,
-  Column,
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-  TextField,
-  Slider,
-} from '@/components'
+import { Button, Page, Slider, TextField, Typography } from '@/components'
+import { DecksTable } from '@/components/decks/decks-table.tsx'
+import { Pagination } from '@/components/ui/pagination'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useGetDecksQuery } from '@/services/decks'
 
-const columns: Column[] = [
-  {
-    key: 'name',
-    title: 'Name',
-  },
-  {
-    key: 'cardsCount',
-    title: 'Cards',
-  },
-  {
-    key: 'updated',
-    title: 'Last Updated',
-  },
-  {
-    key: 'author',
-    title: 'Created By',
-  },
-  {
-    key: 'actions',
-    title: '',
-  },
-]
-
 export const DecksPage = () => {
+  const [currentPage, setCurrentPage] = useState(1)
+
   const { data: decks } = useGetDecksQuery()
   const [activeTab, setActiveTab] = useState('my')
   const [range, setRange] = useState([0, 100])
@@ -67,20 +36,12 @@ export const DecksPage = () => {
           <Slider onValueCommit={setRange} value={rangeValue} onValueChange={setRangeValue} />
           <Button variant={'secondary'}>Clear filters</Button>
         </div>
-        <Table>
-          <TableHeader columns={columns} />
-          <TableBody>
-            {decks?.items.map(deck => (
-              <TableRow key={deck.id}>
-                <TableCell>{deck.name}</TableCell>
-                <TableCell>{deck.cardsCount}</TableCell>
-                <TableCell>{deck.updated}</TableCell>
-                <TableCell>{deck.author.name}</TableCell>
-                <TableCell>...</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DecksTable decks={decks?.items} />
+        <Pagination
+          count={decks?.pagination?.totalPages || 1}
+          page={currentPage}
+          onChange={setCurrentPage}
+        />
       </div>
     </Page>
   )
