@@ -31,3 +31,24 @@ export type DecksResponse = {
   pagination: Pagination
   items: Deck[]
 }
+
+export type DeckResponse = Deck
+
+export type CardsResponse = {
+  pagination: Pagination
+  items: Card[]
+}
+
+export type Card = {
+  id: string
+  question: string
+  answer: string
+  deckId: string
+  questionImg?: string | null
+  answerImg?: string | null
+  created: string
+  updated: string
+  shots: number
+  grade: number
+  userId: string
+}
