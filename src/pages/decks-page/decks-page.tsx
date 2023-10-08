@@ -7,9 +7,14 @@ import { DecksTable } from '@/components/decks/decks-table.tsx'
 import { Pagination } from '@/components/ui/pagination'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useGetDecksQuery } from '@/services/decks'
+import { selectDecksCurrentPage } from '@/services/decks/decks.selectors.ts'
+import { decksSlice } from '@/services/decks/decks.slice.ts'
+import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 
 export const DecksPage = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+  const dispatch = useAppDispatch()
+  const currentPage = useAppSelector(selectDecksCurrentPage)
+  const setCurrentPage = (page: number) => dispatch(decksSlice.actions.setCurrentPage(page))
 
   const { data: decks } = useGetDecksQuery()
   const [activeTab, setActiveTab] = useState('my')
