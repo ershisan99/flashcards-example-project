@@ -52,3 +52,15 @@ export type Card = {
   grade: number
   userId: string
 }
+
+export type GetDecksArgs = {
+  minCardsCount?: number
+  maxCardsCount?: number
+  name?: string
+  authorId?: string
+  orderBy?: string
+  currentPage?: number
+  itemsPerPage?: number
+}
+
+export type Tab = 'all' | 'my'

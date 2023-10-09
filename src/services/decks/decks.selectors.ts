@@ -6,7 +6,7 @@ export const selectDecksPerPage = (state: RootState) => state.decks.perPage
 
 export const selectDecksSearch = (state: RootState) => state.decks.search
 
-export const selectDecksAuthorId = (state: RootState) => state.decks.authorId
+export const selectDecksCurrentTab = (state: RootState) => state.decks.currentTab
 
 export const selectDecksMinCards = (state: RootState) => state.decks.minCards
 
