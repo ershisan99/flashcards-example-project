@@ -1,0 +1,37 @@
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
+
+import * as DialogPrimitive from '@radix-ui/react-dialog'
+
+import s from './modal.module.scss'
+
+import { Close } from '@/assets'
+import { Typography } from '@/components'
+
+export type ModalProps = {
+  title?: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  children: ReactNode
+} & Omit<ComponentPropsWithoutRef<typeof DialogPrimitive.Dialog>, 'open' | 'onOpenChange'>
+export const Modal = ({ children, title, ...props }: ModalProps) => {
+  return (
+    <DialogPrimitive.Root {...props}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className={s.overlay} />
+        <DialogPrimitive.Content className={s.content}>
+          <div className={s.header}>
+            <DialogPrimitive.Title asChild>
+              <Typography variant={'h2'} as={'h2'}>
+                {title}
+              </Typography>
+            </DialogPrimitive.Title>
+            <DialogPrimitive.Close className={s.closeButton}>
+              <Close />
+            </DialogPrimitive.Close>
+          </div>
+          {children}
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
+  )
+}
