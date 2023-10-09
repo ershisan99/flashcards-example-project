@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom'
 
+import s from './decks-table.module.scss'
+
+import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
 import {
+  Button,
   Column,
   Table,
   TableBody,
@@ -11,7 +15,6 @@ import {
 } from '@/components'
 import { Deck } from '@/services/decks'
 import { formatDate } from '@/utils'
-
 const columns: Column[] = [
   {
     key: 'name',
@@ -37,8 +40,14 @@ const columns: Column[] = [
 
 type Props = {
   decks: Deck[] | undefined
+  onDeleteClick: (id: string) => void
+  currentUserId: string
+  onEditClick: (id: string) => void
 }
-export const DecksTable = ({ decks }: Props) => {
+export const DecksTable = ({ decks, onEditClick, onDeleteClick, currentUserId }: Props) => {
+  const handleEditClick = (id: string) => () => onEditClick(id)
+  const handleDeleteClick = (id: string) => () => onDeleteClick(id)
+
   return (
     <Table>
       <TableHeader columns={columns} />
@@ -53,7 +62,23 @@ export const DecksTable = ({ decks }: Props) => {
             <TableCell>{deck.cardsCount}</TableCell>
             <TableCell>{formatDate(deck.updated)}</TableCell>
             <TableCell>{deck.author.name}</TableCell>
-            <TableCell>...</TableCell>
+            <TableCell>
+              <div className={s.iconsContainer}>
+                <Button variant={'icon'} as={Link} to={`/decks/${deck.id}/learn`}>
+                  <PlayCircleOutline />
+                </Button>
+                {deck.author.id === currentUserId && (
+                  <>
+                    <Button variant={'icon'} onClick={handleEditClick(deck.id)}>
+                      <Edit2Outline />
+                    </Button>
+                    <Button variant={'icon'} onClick={handleDeleteClick(deck.id)}>
+                      <TrashOutline />
+                    </Button>
+                  </>
+                )}
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
