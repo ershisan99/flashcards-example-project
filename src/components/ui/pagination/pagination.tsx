@@ -166,15 +166,17 @@ export type PerPageSelectProps = {
   onPerPageChange: (itemPerPage: number) => void
 }
 
-export const PerPageSelect: FC<PerPageSelectProps> = ({
-  perPage,
-  perPageOptions,
-  onPerPageChange,
-}) => {
-  const selectOptions = perPageOptions.map(value => ({
-    label: value,
-    value,
-  }))
+export const PerPageSelect: FC<PerPageSelectProps> = (
+  {
+    // perPage,
+    // perPageOptions,
+    // onPerPageChange,
+  }
+) => {
+  // const selectOptions = perPageOptions.map(value => ({
+  //   label: value,
+  //   value,
+  // }))
 
   return (
     <div className={classNames.selectBox}>
