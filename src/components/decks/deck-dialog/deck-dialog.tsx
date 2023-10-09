@@ -29,6 +29,7 @@ export const DeckDialog = ({
   })
   const onSubmit = handleSubmit(data => {
     onConfirm(data)
+    dialogProps.onOpenChange?.(false)
     reset()
   })
   const handleCancel = () => {

@@ -63,4 +63,12 @@ export type GetDecksArgs = {
   itemsPerPage?: number
 }
 
+export type CreateDeckArgs = {
+  name: string
+  isPrivate?: boolean
+  cover?: string
+}
+
+export type UpdateDeckArgs = Partial<CreateDeckArgs> & { id: Deck['id'] }
+
 export type Tab = 'all' | 'my'
