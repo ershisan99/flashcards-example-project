@@ -1,15 +1,13 @@
 import { useState } from 'react'
 
+import { DeckDialog } from './'
+import { Button } from '@/components'
 import { Meta, StoryObj } from '@storybook/react'
 
-import { DeckDialog } from './'
-
-import { Button } from '@/components'
-
 const meta = {
-  title: 'Decks/Deck Dialog',
   component: DeckDialog,
   tags: ['autodocs'],
+  title: 'Decks/Deck Dialog',
 } satisfies Meta<typeof DeckDialog>
 
 export default meta
@@ -17,8 +15,8 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    open: true,
     onOpenChange: () => {},
+    open: true,
   },
   render: args => {
     const [open, setOpen] = useState(false)
@@ -29,13 +27,13 @@ export const Default: Story = {
         <Button onClick={() => setOpen(true)}>Open Modal</Button>
         <DeckDialog
           {...args}
-          onOpenChange={setOpen}
-          open={open}
           onCancel={closeModal}
           onConfirm={data => {
             console.log(data)
             closeModal()
           }}
+          onOpenChange={setOpen}
+          open={open}
         />
       </>
     )
@@ -44,8 +42,8 @@ export const Default: Story = {
 
 export const WithDefaultValues: Story = {
   args: {
-    open: true,
     onOpenChange: () => {},
+    open: true,
   },
   render: args => {
     const [open, setOpen] = useState(false)
@@ -57,16 +55,16 @@ export const WithDefaultValues: Story = {
         <DeckDialog
           {...args}
           defaultValues={{
-            name: 'some name',
             isPrivate: true,
+            name: 'some name',
           }}
-          onOpenChange={setOpen}
-          open={open}
           onCancel={closeModal}
           onConfirm={data => {
             console.log(data)
             closeModal()
           }}
+          onOpenChange={setOpen}
+          open={open}
         />
       </>
     )

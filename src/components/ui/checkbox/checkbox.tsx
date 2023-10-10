@@ -1,55 +1,54 @@
 import { FC } from 'react'
 
+import { Check } from '@/assets/icons'
+import { Typography } from '@/components'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import * as LabelRadix from '@radix-ui/react-label'
 import { clsx } from 'clsx'
 
 import s from './checkbox.module.scss'
 
-import { Check } from '@/assets/icons'
-import { Typography } from '@/components'
-
 export type CheckboxProps = {
-  className?: string
   checked?: boolean
-  onChange?: (checked: boolean) => void
+  className?: string
   disabled?: boolean
-  required?: boolean
-  label?: string
   id?: string
+  label?: string
+  onChange?: (checked: boolean) => void
   position?: 'left'
+  required?: boolean
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
   checked,
+  className,
+  disabled,
+  id,
+  label,
   onChange,
   position,
-  disabled,
   required,
-  label,
-  id,
-  className,
 }) => {
   const classNames = {
-    container: clsx(s.container, className),
     buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled, position === 'left' && s.left),
-    root: s.root,
+    container: clsx(s.container, className),
     indicator: s.indicator,
     label: clsx(s.label, disabled && s.disabled),
+    root: s.root,
   }
 
   return (
     <div className={classNames.container}>
       <LabelRadix.Root asChild>
-        <Typography variant="body2" className={classNames.label} as={'label'}>
+        <Typography as={'label'} className={classNames.label} variant={'body2'}>
           <div className={classNames.buttonWrapper}>
             <CheckboxRadix.Root
-              className={classNames.root}
               checked={checked}
-              onCheckedChange={onChange}
+              className={classNames.root}
               disabled={disabled}
-              required={required}
               id={id}
+              onCheckedChange={onChange}
+              required={required}
             >
               {checked && (
                 <CheckboxRadix.Indicator className={classNames.indicator} forceMount>

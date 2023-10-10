@@ -5,23 +5,23 @@ import { formatDate } from '@/utils'
 const columns: Column[] = [
   {
     key: 'question',
-    title: 'Question',
     sortable: true,
+    title: 'Question',
   },
   {
     key: 'answer',
-    title: 'Answer',
     sortable: true,
+    title: 'Answer',
   },
   {
     key: 'updated',
-    title: 'Last Updated',
     sortable: true,
+    title: 'Last Updated',
   },
   {
     key: 'grade',
-    title: 'Grade',
     sortable: true,
+    title: 'Grade',
   },
 ]
 

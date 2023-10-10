@@ -1,67 +1,66 @@
 import { FC } from 'react'
 
+import { usePagination } from './usePagination'
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@/assets'
 import { clsx } from 'clsx'
 
 import s from './pagination.module.scss'
-import { usePagination } from './usePagination'
-
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@/assets'
 
 type PaginationConditionals =
   | {
-      perPage?: null
-      perPageOptions?: never
-      onPerPageChange?: never
-    }
-  | {
+      onPerPageChange: (itemPerPage: number) => void
       perPage: number
       perPageOptions: number[]
-      onPerPageChange: (itemPerPage: number) => void
+    }
+  | {
+      onPerPageChange?: never
+      perPage?: null
+      perPageOptions?: never
     }
 
 export type PaginationProps = {
   count: number
-  page: number
   onChange: (page: number) => void
-  siblings?: number
+  onPerPageChange?: (itemPerPage: number) => void
+  page: number
   perPage?: number
   perPageOptions?: number[]
-  onPerPageChange?: (itemPerPage: number) => void
+  siblings?: number
 } & PaginationConditionals
 
 const classNames = {
-  root: s.root,
   container: s.container,
-  selectBox: s.selectBox,
-  select: s.select,
-  item: s.item,
   dots: s.dots,
   icon: s.icon,
+  item: s.item,
   pageButton(selected?: boolean) {
     return clsx(this.item, selected && s.selected)
   },
+  root: s.root,
+  select: s.select,
+  selectBox: s.selectBox,
 }
 
 export const Pagination: FC<PaginationProps> = ({
-  onChange,
   count,
+  onChange,
+  onPerPageChange,
   page,
   perPage = null,
   perPageOptions,
-  onPerPageChange,
   siblings,
 }) => {
   const {
-    paginationRange,
-    isLastPage,
-    isFirstPage,
-    handlePreviousPageClicked,
-    handleNextPageClicked,
     handleMainPageClicked,
+    handleNextPageClicked,
+    handlePreviousPageClicked,
+    isFirstPage,
+    isLastPage,
+    paginationRange,
   } = usePagination({
-    page,
     count,
     onChange,
+    page,
     siblings,
   })
 
@@ -70,7 +69,7 @@ export const Pagination: FC<PaginationProps> = ({
   return (
     <div className={classNames.root}>
       <div className={classNames.container}>
-        <PrevButton onClick={handlePreviousPageClicked} disabled={isFirstPage} />
+        <PrevButton disabled={isFirstPage} onClick={handlePreviousPageClicked} />
 
         <MainPaginationButtons
           currentPage={page}
@@ -78,15 +77,15 @@ export const Pagination: FC<PaginationProps> = ({
           paginationRange={paginationRange}
         />
 
-        <NextButton onClick={handleNextPageClicked} disabled={isLastPage} />
+        <NextButton disabled={isLastPage} onClick={handleNextPageClicked} />
       </div>
 
       {showPerPageSelect && (
         <PerPageSelect
           {...{
+            onPerPageChange,
             perPage,
             perPageOptions,
-            onPerPageChange,
           }}
         />
       )}
@@ -95,8 +94,8 @@ export const Pagination: FC<PaginationProps> = ({
 }
 
 type NavigationButtonProps = {
-  onClick: () => void
   disabled?: boolean
+  onClick: () => void
 }
 
 type PageButtonProps = NavigationButtonProps & {
@@ -107,43 +106,43 @@ type PageButtonProps = NavigationButtonProps & {
 const Dots: FC = () => {
   return <span className={classNames.dots}>&#8230;</span>
 }
-const PageButton: FC<PageButtonProps> = ({ onClick, disabled, selected, page }) => {
+const PageButton: FC<PageButtonProps> = ({ disabled, onClick, page, selected }) => {
   return (
     <button
-      onClick={onClick}
-      disabled={selected || disabled}
       className={classNames.pageButton(selected)}
+      disabled={selected || disabled}
+      onClick={onClick}
     >
       {page}
     </button>
   )
 }
-const PrevButton: FC<NavigationButtonProps> = ({ onClick, disabled }) => {
+const PrevButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
   return (
-    <button className={classNames.item} onClick={onClick} disabled={disabled}>
+    <button className={classNames.item} disabled={disabled} onClick={onClick}>
       <KeyboardArrowLeft className={classNames.icon} />
     </button>
   )
 }
 
-const NextButton: FC<NavigationButtonProps> = ({ onClick, disabled }) => {
+const NextButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
   return (
-    <button className={classNames.item} onClick={onClick} disabled={disabled}>
+    <button className={classNames.item} disabled={disabled} onClick={onClick}>
       <KeyboardArrowRight className={classNames.icon} />
     </button>
   )
 }
 
 type MainPaginationButtonsProps = {
-  paginationRange: (number | string)[]
   currentPage: number
   onClick: (pageNumber: number) => () => void
+  paginationRange: (number | string)[]
 }
 
 const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
-  paginationRange,
   currentPage,
   onClick,
+  paginationRange,
 }) => {
   return (
     <>
@@ -154,16 +153,16 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
           return <Dots key={index} />
         }
 
-        return <PageButton key={index} page={page} selected={isSelected} onClick={onClick(page)} />
+        return <PageButton key={index} onClick={onClick(page)} page={page} selected={isSelected} />
       })}
     </>
   )
 }
 
 export type PerPageSelectProps = {
+  onPerPageChange: (itemPerPage: number) => void
   perPage: number
   perPageOptions: number[]
-  onPerPageChange: (itemPerPage: number) => void
 }
 
 export const PerPageSelect: FC<PerPageSelectProps> = (

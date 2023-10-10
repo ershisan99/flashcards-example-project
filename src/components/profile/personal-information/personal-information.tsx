@@ -4,11 +4,11 @@ import { Button, Card, Typography } from '../../ui'
 import s from './personal-information.module.scss'
 
 type Props = {
-  email: string
   avatar: string
+  email: string
   name: string
-  onLogout: () => void
   onAvatarChange: (newAvatar: string) => void
+  onLogout: () => void
   onNameChange: (newName: string) => void
 }
 export const PersonalInformation = ({
@@ -16,8 +16,8 @@ export const PersonalInformation = ({
   email,
   name,
   onAvatarChange,
-  onNameChange,
   onLogout,
+  onNameChange,
 }: Props) => {
   const handleAvatarChanged = () => {
     onAvatarChange('new Avatar')
@@ -31,31 +31,31 @@ export const PersonalInformation = ({
 
   return (
     <Card className={s.card}>
-      <Typography variant="large" className={s.title}>
+      <Typography className={s.title} variant={'large'}>
         Personal Information
       </Typography>
       <div className={s.photoContainer}>
         <div>
-          <img src={avatar} alt={'avatar'} />
+          <img alt={'avatar'} src={avatar} />
           <button className={s.editAvatarButton} onClick={handleAvatarChanged}>
             <Camera />
           </button>
         </div>
       </div>
       <div className={s.nameWithEditButton}>
-        <Typography variant="h1" className={s.name}>
+        <Typography className={s.name} variant={'h1'}>
           {name}
         </Typography>
         <button className={s.editNameButton} onClick={handleNameChanged}>
           <Edit />
         </button>
       </div>
-      <Typography variant="body2" className={s.email}>
+      <Typography className={s.email} variant={'body2'}>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         {email}
       </Typography>
       <div className={s.buttonContainer}>
-        <Button variant={'secondary'} onClick={handleLogout}>
+        <Button onClick={handleLogout} variant={'secondary'}>
           <Logout />
           Sign Out
         </Button>

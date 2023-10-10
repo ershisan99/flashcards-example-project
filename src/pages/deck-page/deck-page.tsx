@@ -1,8 +1,7 @@
 import { useState } from 'react'
-
 import { Link, useParams } from 'react-router-dom'
 
-import { Button, TextField, Typography, CardsTable } from '@/components'
+import { Button, CardsTable, TextField, Typography } from '@/components'
 import { Pagination } from '@/components/ui/pagination'
 import { useGetDeckByIdQuery, useGetDeckCardsQuery } from '@/services'
 
@@ -20,12 +19,12 @@ export const DeckPage = () => {
       <Button as={Link} to={learnLink}>
         Learn
       </Button>
-      <TextField search placeholder={'Search cards'} />
+      <TextField placeholder={'Search cards'} search />
       <CardsTable cards={cardsData?.items} />
       <Pagination
         count={cardsData?.pagination?.totalPages || 1}
-        page={currentPage}
         onChange={setCurrentPage}
+        page={currentPage}
       />
     </div>
   )

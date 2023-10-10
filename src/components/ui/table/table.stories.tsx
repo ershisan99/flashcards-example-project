@@ -1,12 +1,10 @@
+import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeadCell, TableRow } from './'
+import { Typography } from '@/components'
 import { Meta } from '@storybook/react'
 
-import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeadCell, TableRow } from './'
-
-import { Typography } from '@/components'
-
 export default {
-  title: 'Components/Table',
   component: Table,
+  title: 'Components/Table',
 } as Meta<typeof Table>
 
 export const Default = {
@@ -16,7 +14,7 @@ export const Default = {
         <TableHead>
           <TableRow>
             <TableHeadCell>Название</TableHeadCell>
-            <TableHeadCell align="center">Описание</TableHeadCell>
+            <TableHeadCell align={'center'}>Описание</TableHeadCell>
             <TableHeadCell>Ссылка</TableHeadCell>
             <TableHeadCell>Тип</TableHeadCell>
             <TableHeadCell>Вид</TableHeadCell>
@@ -34,9 +32,9 @@ export const Default = {
             <TableCell>
               <Typography
                 as={'a'}
+                href={'https://it-incubator.io/'}
+                target={'_blank'}
                 variant={'link1'}
-                href="https://it-incubator.io/"
-                target="_blank"
               >
                 Какая-то ссылка кудато на какой-то источник с информациейо ссылка кудато на какой-то
                 источник
@@ -69,27 +67,27 @@ export const Default = {
 
 const data = [
   {
+    category: 'Основной',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
     id: '01',
-    title: 'Web Basic',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
     link: 'Какая-то ссылка кудато на какой-то источник с информациейо ссылка кудато на какой-то',
-    category: 'Основной',
+    title: 'Web Basic',
     type: 'Читать',
   },
   {
+    category: 'Основной',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
     id: '02',
-    title: 'Web Basic',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
     link: 'Какая-то ссылка куда-то',
-    category: 'Основной',
+    title: 'Web Basic',
     type: 'Читать',
   },
   {
-    id: '03',
-    title: 'Web Basic',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-    link: 'Какая-то ссылка кудато на какой-то источник с информациейо ссылка кудато на какой-то. Какая-то ссылка кудато на какой-то источник с информациейо ссылка куда-то на какой-то',
     category: 'Основной',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
+    id: '03',
+    link: 'Какая-то ссылка кудато на какой-то источник с информациейо ссылка кудато на какой-то. Какая-то ссылка кудато на какой-то источник с информациейо ссылка куда-то на какой-то',
+    title: 'Web Basic',
     type: 'Читать',
   },
 ]
@@ -101,7 +99,7 @@ export const WithMapMethod = {
         <TableHead>
           <TableRow>
             <TableHeadCell>Название</TableHeadCell>
-            <TableHeadCell align="center">Описание</TableHeadCell>
+            <TableHeadCell align={'center'}>Описание</TableHeadCell>
             <TableHeadCell>Ссылка</TableHeadCell>
             <TableHeadCell>Тип</TableHeadCell>
             <TableHeadCell>Вид</TableHeadCell>

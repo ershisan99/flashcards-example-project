@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { RadioGroup } from './'
 
 const meta = {
-  title: 'Components/Radio Group',
   component: RadioGroup,
   tags: ['autodocs'],
+  title: 'Components/Radio Group',
 } satisfies Meta<typeof RadioGroup>
 
 export default meta
@@ -22,10 +22,10 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   args: {
+    disabled: true,
     options: [
       { label: 'Option One', value: 'option-one' },
       { label: 'Option Two', value: 'option-two' },
     ],
-    disabled: true,
   },
 }

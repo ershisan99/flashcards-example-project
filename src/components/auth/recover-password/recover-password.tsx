@@ -1,10 +1,10 @@
-import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { z } from 'zod'
 
 import { Button, Card, ControlledTextField, Typography } from '../../ui'
+import { DevTool } from '@hookform/devtools'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 import s from './recover-password.module.scss'
 
@@ -20,11 +20,11 @@ type Props = {
 
 export const RecoverPassword = (props: Props) => {
   const { control, handleSubmit } = useForm<FormType>({
-    mode: 'onSubmit',
-    resolver: zodResolver(schema),
     defaultValues: {
       email: '',
     },
+    mode: 'onSubmit',
+    resolver: zodResolver(schema),
   })
 
   const handleFormSubmitted = handleSubmit(props.onSubmit)
@@ -33,24 +33,24 @@ export const RecoverPassword = (props: Props) => {
     <>
       <DevTool control={control} />
       <Card className={s.card}>
-        <Typography variant="large" className={s.title}>
+        <Typography className={s.title} variant={'large'}>
           Forgot your password?
         </Typography>
         <form onSubmit={handleFormSubmitted}>
           <div className={s.form}>
-            <ControlledTextField placeholder={'Email'} name={'email'} control={control} />
+            <ControlledTextField control={control} name={'email'} placeholder={'Email'} />
           </div>
-          <Typography variant="body2" className={s.instructions}>
+          <Typography className={s.instructions} variant={'body2'}>
             Enter your email address and we will send you further instructions
           </Typography>
           <Button className={s.button} fullWidth type={'submit'}>
             Send Instructions
           </Button>
         </form>
-        <Typography variant="body2" className={s.caption}>
+        <Typography className={s.caption} variant={'body2'}>
           Did you remember your password?
         </Typography>
-        <Typography variant="link1" as={Link} to="/sign-in" className={s.loginLink}>
+        <Typography as={Link} className={s.loginLink} to={'/sign-in'} variant={'link1'}>
           Try logging in
         </Typography>
       </Card>
