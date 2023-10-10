@@ -9,24 +9,26 @@ const Slider = forwardRef<
   Omit<ComponentPropsWithoutRef<typeof SliderPrimitive.Root>, 'value'> & {
     value?: (number | undefined)[]
   }
->(({ className, value, ...props }, ref) => {
+>(({ className, max, onValueChange, value, ...props }, ref) => {
   useEffect(() => {
     if (value?.[1] === undefined || value?.[1] === null) {
-      props.onValueChange?.([value?.[0] ?? 0, props.max ?? 0])
+      onValueChange?.([value?.[0] ?? 0, max ?? 0])
     }
-  }, [props.max, value])
+  }, [max, value, onValueChange])
 
   return (
     <div className={s.container}>
       <span>{value?.[0]}</span>
       <SliderPrimitive.Root
-        ref={ref}
         className={clsx(s.root, className)}
+        max={max}
+        onValueChange={onValueChange}
+        ref={ref}
         {...props}
-        value={[value?.[0] ?? 0, value?.[1] ?? props.max ?? 0]}
+        value={[value?.[0] ?? 0, value?.[1] ?? max ?? 0]}
       >
         <SliderPrimitive.Track className={s.track}>
-          <SliderPrimitive.Range className="absolute h-full bg-primary" />
+          <SliderPrimitive.Range className={'absolute h-full bg-primary'} />
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb className={s.thumb} />
         <SliderPrimitive.Thumb className={s.thumb} />

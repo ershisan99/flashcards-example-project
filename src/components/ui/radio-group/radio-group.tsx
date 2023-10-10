@@ -1,11 +1,10 @@
 import * as React from 'react'
 
+import { Typography } from '@/components'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import { clsx } from 'clsx'
 
 import s from './radio-group.module.scss'
-
-import { Typography } from '@/components'
 
 const RadioGroupRoot = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -19,9 +18,9 @@ RadioGroupRoot.displayName = RadioGroupPrimitive.Root.displayName
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, children, ...props }, ref) => {
+>(({ children, className, ...props }, ref) => {
   return (
-    <RadioGroupPrimitive.Item ref={ref} className={clsx(s.option, className)} {...props}>
+    <RadioGroupPrimitive.Item className={clsx(s.option, className)} ref={ref} {...props}>
       <div className={s.icon}></div>
     </RadioGroupPrimitive.Item>
   )
@@ -37,21 +36,21 @@ export type RadioGroupProps = Omit<
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>,
   'children'
 > & {
-  options: Option[]
   errorMessage?: string
+  options: Option[]
 }
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   RadioGroupProps
 >((props, ref) => {
-  const { options, errorMessage, ...restProps } = props
+  const { errorMessage, options, ...restProps } = props
 
   return (
     <RadioGroupRoot {...restProps} ref={ref}>
       {options.map(option => (
         <div className={s.label} key={option.value}>
-          <RadioGroupItem value={option.value} id={option.value} />
-          <Typography variant={'body2'} as={'label'} htmlFor={option.value}>
+          <RadioGroupItem id={option.value} value={option.value} />
+          <Typography as={'label'} htmlFor={option.value} variant={'body2'}>
             {option.label}
           </Typography>
         </div>
@@ -60,4 +59,4 @@ const RadioGroup = React.forwardRef<
   )
 })
 
-export { RadioGroupRoot, RadioGroupItem, RadioGroup }
+export { RadioGroup, RadioGroupItem, RadioGroupRoot }

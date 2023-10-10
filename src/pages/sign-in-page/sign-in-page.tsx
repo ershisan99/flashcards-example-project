@@ -1,4 +1,4 @@
-import { SignIn, Page } from '@/components'
+import { Page, SignIn } from '@/components'
 
 export const SignInPage = () => {
   return (

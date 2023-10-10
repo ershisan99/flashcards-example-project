@@ -1,8 +1,8 @@
-import s from './delete-deck-dialog.module.scss'
-
 import { Dialog, DialogProps } from '@/components'
+
+import s from './delete-deck-dialog.module.scss'
 export default {}
-type Props = Pick<DialogProps, 'onConfirm' | 'onCancel' | 'open' | 'onOpenChange'> & {
+type Props = Pick<DialogProps, 'onCancel' | 'onConfirm' | 'onOpenChange' | 'open'> & {
   deckName: string
 }
 export const DeleteDeckDialog = ({ deckName, ...dialogProps }: Props) => {

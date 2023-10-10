@@ -1,9 +1,9 @@
-import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Button, Card, ControlledTextField, Typography } from '../../ui'
+import { DevTool } from '@hookform/devtools'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 import s from './new-password.module.scss'
 
@@ -19,10 +19,10 @@ type Props = {
 
 export const NewPassword = (props: Props) => {
   const { control, handleSubmit } = useForm<FormType>({
-    resolver: zodResolver(schema),
     defaultValues: {
       password: '',
     },
+    resolver: zodResolver(schema),
   })
 
   const handleFormSubmitted = handleSubmit(props.onSubmit)
@@ -31,18 +31,18 @@ export const NewPassword = (props: Props) => {
     <>
       <DevTool control={control} />
       <Card className={s.card}>
-        <Typography variant="large" className={s.title}>
+        <Typography className={s.title} variant={'large'}>
           Create new password
         </Typography>
         <form onSubmit={handleFormSubmitted}>
           <ControlledTextField
-            placeholder={'Password'}
-            name={'password'}
-            control={control}
-            type={'password'}
             containerProps={{ className: s.input }}
+            control={control}
+            name={'password'}
+            placeholder={'Password'}
+            type={'password'}
           />
-          <Typography variant="caption" className={s.instructions}>
+          <Typography className={s.instructions} variant={'caption'}>
             Create new password and we will send you further instructions to email
           </Typography>
           <Button fullWidth type={'submit'}>

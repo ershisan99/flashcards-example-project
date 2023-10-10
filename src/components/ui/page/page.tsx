@@ -11,5 +11,5 @@ export const Page = forwardRef<HTMLDivElement, PageProps>(({ className, ...props
     root: clsx(s.root, className),
   }
 
-  return <div {...props} ref={ref} className={classNames.root} />
+  return <div {...props} className={classNames.root} ref={ref} />
 })

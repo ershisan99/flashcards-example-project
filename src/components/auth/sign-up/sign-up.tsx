@@ -1,11 +1,11 @@
-import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { omit } from 'remeda'
-import { z } from 'zod'
 
 import { Button, Card, ControlledTextField, Typography } from '../../ui'
+import { DevTool } from '@hookform/devtools'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { omit } from 'remeda'
+import { z } from 'zod'
 
 import s from './sign-up.module.scss'
 
@@ -18,8 +18,8 @@ const schema = z
   .superRefine((data, ctx) => {
     if (data.password !== data.passwordConfirmation) {
       ctx.addIssue({
-        message: 'Passwords do not match',
         code: z.ZodIssueCode.custom,
+        message: 'Passwords do not match',
         path: ['passwordConfirmation'],
       })
     }
@@ -35,13 +35,13 @@ type Props = {
 
 export const SignUp = (props: Props) => {
   const { control, handleSubmit } = useForm<FormType>({
-    mode: 'onSubmit',
-    resolver: zodResolver(schema),
     defaultValues: {
       email: '',
       password: '',
       passwordConfirmation: '',
     },
+    mode: 'onSubmit',
+    resolver: zodResolver(schema),
   })
 
   const handleFormSubmitted = handleSubmit(data =>
@@ -52,30 +52,30 @@ export const SignUp = (props: Props) => {
     <>
       <DevTool control={control} />
       <Card className={s.card}>
-        <Typography variant="large" className={s.title}>
+        <Typography className={s.title} variant={'large'}>
           Sign Up
         </Typography>
         <form onSubmit={handleFormSubmitted}>
           <div className={s.form}>
             <ControlledTextField
+              control={control}
               label={'Email'}
-              placeholder={'Email'}
               name={'email'}
-              control={control}
+              placeholder={'Email'}
             />
             <ControlledTextField
-              placeholder={'Password'}
+              control={control}
               label={'Password'}
-              type={'password'}
               name={'password'}
-              control={control}
+              placeholder={'Password'}
+              type={'password'}
             />
             <ControlledTextField
-              placeholder={'Confirm password'}
-              label={'Confirm password'}
-              type={'password'}
-              name={'passwordConfirmation'}
               control={control}
+              label={'Confirm password'}
+              name={'passwordConfirmation'}
+              placeholder={'Confirm password'}
+              type={'password'}
             />
           </div>
           <Button className={s.button} fullWidth type={'submit'}>
@@ -83,10 +83,10 @@ export const SignUp = (props: Props) => {
           </Button>
         </form>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
-        <Typography variant="body2" className={s.caption}>
+        <Typography className={s.caption} variant={'body2'}>
           Already have an account?
         </Typography>
-        <Typography variant="link1" as={Link} to="/sign-in" className={s.signInLink}>
+        <Typography as={Link} className={s.signInLink} to={'/sign-in'} variant={'link1'}>
           Sign In
         </Typography>
       </Card>

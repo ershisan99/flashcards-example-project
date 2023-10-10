@@ -11,7 +11,7 @@ const TabsList = forwardRef<
   ElementRef<typeof TabsPrimitive.List>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.List ref={ref} className={clsx(s.list, className)} {...props} />
+  <TabsPrimitive.List className={clsx(s.list, className)} ref={ref} {...props} />
 ))
 
 TabsList.displayName = TabsPrimitive.List.displayName
@@ -20,7 +20,7 @@ const TabsTrigger = forwardRef<
   ElementRef<typeof TabsPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger ref={ref} className={clsx(s.trigger, className)} {...props} />
+  <TabsPrimitive.Trigger className={clsx(s.trigger, className)} ref={ref} {...props} />
 ))
 
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
@@ -29,9 +29,9 @@ const TabsContent = forwardRef<
   ElementRef<typeof TabsPrimitive.Content>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content ref={ref} className={clsx(s.content, className)} {...props} />
+  <TabsPrimitive.Content className={clsx(s.content, className)} ref={ref} {...props} />
 ))
 
 TabsContent.displayName = TabsPrimitive.Content.displayName
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabs, TabsContent, TabsList, TabsTrigger }

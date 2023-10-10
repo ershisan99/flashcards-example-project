@@ -1,10 +1,9 @@
 import { ComponentProps, ComponentPropsWithoutRef, ElementRef, FC, forwardRef } from 'react'
 
+import { Typography } from '@/components'
 import { clsx } from 'clsx'
 
 import s from './table.module.scss'
-
-import { Typography } from '@/components'
 
 export const Table = forwardRef<HTMLTableElement, ComponentPropsWithoutRef<'table'>>(
   ({ className, ...rest }, ref) => {
@@ -34,7 +33,7 @@ export const TableRow = forwardRef<ElementRef<'tr'>, ComponentPropsWithoutRef<'t
 )
 
 export const TableHeadCell = forwardRef<ElementRef<'th'>, ComponentPropsWithoutRef<'th'>>(
-  ({ className, children, ...rest }, ref) => {
+  ({ children, className, ...rest }, ref) => {
     const classNames = {
       headCell: clsx(className, s.headCell),
     }
@@ -56,10 +55,10 @@ export const TableCell = forwardRef<ElementRef<'td'>, ComponentPropsWithoutRef<'
   }
 )
 
-export const TableEmpty: FC<ComponentProps<'div'> & { mt?: string; mb?: string }> = ({
+export const TableEmpty: FC<ComponentProps<'div'> & { mb?: string; mt?: string }> = ({
   className,
-  mt = '89px',
   mb,
+  mt = '89px',
 }) => {
   const classNames = {
     empty: clsx(className, s.empty),
@@ -67,9 +66,9 @@ export const TableEmpty: FC<ComponentProps<'div'> & { mt?: string; mb?: string }
 
   return (
     <Typography
-      variant={'h2'}
       className={classNames.empty}
-      style={{ marginTop: mt, marginBottom: mb }}
+      style={{ marginBottom: mb, marginTop: mt }}
+      variant={'h2'}
     >
       Пока тут еще нет данных! :(
     </Typography>
@@ -77,41 +76,47 @@ export const TableEmpty: FC<ComponentProps<'div'> & { mt?: string; mb?: string }
 }
 export type Column = {
   key: string
-  title: string
   sortable?: boolean
+  title: string
 }
 export type Sort = {
-  key: string
   direction: 'asc' | 'desc'
+  key: string
 } | null
 
 export const TableHeader: FC<
   Omit<
     ComponentPropsWithoutRef<'thead'> & {
       columns: Column[]
-      sort?: Sort
       onSort?: (sort: Sort) => void
+      sort?: Sort
     },
     'children'
   >
-> = ({ columns, sort, onSort, ...restProps }) => {
+> = ({ columns, onSort, sort, ...restProps }) => {
   const handleSort = (key: string, sortable?: boolean) => () => {
-    if (!onSort || !sortable) return
+    if (!onSort || !sortable) {
+      return
+    }
 
-    if (sort?.key !== key) return onSort({ key, direction: 'asc' })
+    if (sort?.key !== key) {
+      return onSort({ direction: 'asc', key })
+    }
 
-    if (sort.direction === 'desc') return onSort(null)
+    if (sort.direction === 'desc') {
+      return onSort(null)
+    }
 
     return onSort({
-      key,
       direction: sort?.direction === 'asc' ? 'desc' : 'asc',
+      key,
     })
   }
 
   return (
     <TableHead {...restProps}>
       <TableRow>
-        {columns.map(({ title, key, sortable = true }) => (
+        {columns.map(({ key, sortable = true, title }) => (
           <TableHeadCell key={key} onClick={handleSort(key, sortable)}>
             {title}
             {sort && sort.key === key && <span>{sort.direction === 'asc' ? '▲' : '▼'}</span>}

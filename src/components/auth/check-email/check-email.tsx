@@ -14,16 +14,16 @@ export const CheckEmail = ({ email }: Props) => {
 
   return (
     <Card className={s.card}>
-      <Typography variant="large" className={s.title}>
+      <Typography className={s.title} variant={'large'}>
         Check your email
       </Typography>
       <div className={s.iconContainer}>
         <Email />
       </div>
-      <Typography variant="body2" className={s.instructions}>
+      <Typography className={s.instructions} variant={'body2'}>
         {message}
       </Typography>
-      <Button fullWidth as={Link} to={'/sing-in'}>
+      <Button as={Link} fullWidth to={'/sing-in'}>
         Back to Sign in
       </Button>
     </Card>

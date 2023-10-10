@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
 
-import s from './decks-table.module.scss'
-
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
 import {
   Button,
@@ -15,6 +13,8 @@ import {
 } from '@/components'
 import { Deck } from '@/services/decks'
 import { formatDate } from '@/utils'
+
+import s from './decks-table.module.scss'
 const columns: Column[] = [
   {
     key: 'name',
@@ -39,12 +39,12 @@ const columns: Column[] = [
 ]
 
 type Props = {
+  currentUserId: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
-  currentUserId: string
   onEditClick: (id: string) => void
 }
-export const DecksTable = ({ decks, onEditClick, onDeleteClick, currentUserId }: Props) => {
+export const DecksTable = ({ currentUserId, decks, onDeleteClick, onEditClick }: Props) => {
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
 
@@ -55,7 +55,7 @@ export const DecksTable = ({ decks, onEditClick, onDeleteClick, currentUserId }:
         {decks?.map(deck => (
           <TableRow key={deck.id}>
             <TableCell>
-              <Typography variant={'body2'} as={Link} to={`/decks/${deck.id}`}>
+              <Typography as={Link} to={`/decks/${deck.id}`} variant={'body2'}>
                 {deck.name}
               </Typography>
             </TableCell>
@@ -64,15 +64,15 @@ export const DecksTable = ({ decks, onEditClick, onDeleteClick, currentUserId }:
             <TableCell>{deck.author.name}</TableCell>
             <TableCell>
               <div className={s.iconsContainer}>
-                <Button variant={'icon'} as={Link} to={`/decks/${deck.id}/learn`}>
+                <Button as={Link} to={`/decks/${deck.id}/learn`} variant={'icon'}>
                   <PlayCircleOutline />
                 </Button>
                 {deck.author.id === currentUserId && (
                   <>
-                    <Button variant={'icon'} onClick={handleEditClick(deck.id)}>
+                    <Button onClick={handleEditClick(deck.id)} variant={'icon'}>
                       <Edit2Outline />
                     </Button>
-                    <Button variant={'icon'} onClick={handleDeleteClick(deck.id)}>
+                    <Button onClick={handleDeleteClick(deck.id)} variant={'icon'}>
                       <TrashOutline />
                     </Button>
                   </>

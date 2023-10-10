@@ -1,18 +1,17 @@
 import { ComponentPropsWithoutRef, ReactNode } from 'react'
 
+import { Close } from '@/assets'
+import { Typography } from '@/components'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import s from './modal.module.scss'
 
-import { Close } from '@/assets'
-import { Typography } from '@/components'
-
 export type ModalProps = {
-  title?: string
-  open: boolean
-  onOpenChange: (open: boolean) => void
   children: ReactNode
-} & Omit<ComponentPropsWithoutRef<typeof DialogPrimitive.Dialog>, 'open' | 'onOpenChange'>
+  onOpenChange: (open: boolean) => void
+  open: boolean
+  title?: string
+} & Omit<ComponentPropsWithoutRef<typeof DialogPrimitive.Dialog>, 'onOpenChange' | 'open'>
 export const Modal = ({ children, title, ...props }: ModalProps) => {
   return (
     <DialogPrimitive.Root {...props}>
@@ -21,7 +20,7 @@ export const Modal = ({ children, title, ...props }: ModalProps) => {
         <DialogPrimitive.Content className={s.content}>
           <div className={s.header}>
             <DialogPrimitive.Title asChild>
-              <Typography variant={'h2'} as={'h2'}>
+              <Typography as={'h2'} variant={'h2'}>
                 {title}
               </Typography>
             </DialogPrimitive.Title>
