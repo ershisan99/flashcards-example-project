@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { Button, Card, ControlledTextField, Typography } from '../../ui'
+import { Button, Card, ControlledTextField, Typography } from '@/components'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'

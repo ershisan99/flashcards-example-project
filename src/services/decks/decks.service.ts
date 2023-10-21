@@ -6,19 +6,31 @@ import {
   GetDecksArgs,
   UpdateDeckArgs,
 } from './decks.types'
-
 import { baseApi } from '@/services'
 
 const decksService = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getDecks: builder.query<DecksResponse, GetDecksArgs | void>({
-      query: args => {
-        return {
-          url: `v1/decks`,
-          params: args ?? undefined,
-        }
+    createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
+      invalidatesTags: ['Decks'],
+      onQueryStarted: async (_, { dispatch, getCacheEntry, getState, queryFulfilled }) => {
+        const data = getCacheEntry()
+        const state = getState()
+
+        decksService.util.re
+        await queryFulfilled
       },
-      providesTags: ['Decks'],
+      query: body => ({
+        body,
+        method: 'POST',
+        url: `v1/decks`,
+      }),
+    }),
+    deleteDeck: builder.mutation<void, { id: string }>({
+      invalidatesTags: ['Decks'],
+      query: ({ id }) => ({
+        method: 'DELETE',
+        url: `v1/decks/${id}`,
+      }),
     }),
     getDeckById: builder.query<DeckResponse, { id: string }>({
       query: ({ id }) => `v1/decks/${id}`,
@@ -26,37 +38,31 @@ const decksService = baseApi.injectEndpoints({
     getDeckCards: builder.query<CardsResponse, { id: string }>({
       query: ({ id }) => `v1/decks/${id}/cards`,
     }),
-    createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
-      query: body => ({
-        url: `v1/decks`,
-        method: 'POST',
-        body,
-      }),
-      invalidatesTags: ['Decks'],
-    }),
-    deleteDeck: builder.mutation<void, { id: string }>({
-      query: ({ id }) => ({
-        url: `v1/decks/${id}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Decks'],
+    getDecks: builder.query<DecksResponse, GetDecksArgs | void>({
+      providesTags: ['Decks'],
+      query: args => {
+        return {
+          params: args ?? undefined,
+          url: `v1/decks`,
+        }
+      },
     }),
     updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
-      query: ({ id, ...body }) => ({
-        url: `v1/decks/${id}`,
-        method: 'PATCH',
-        body,
-      }),
       invalidatesTags: ['Decks'],
+      query: ({ id, ...body }) => ({
+        body,
+        method: 'PATCH',
+        url: `v1/decks/${id}`,
+      }),
     }),
   }),
 })
 
 export const {
-  useGetDecksQuery,
-  useGetDeckByIdQuery,
-  useGetDeckCardsQuery,
   useCreateDeckMutation,
   useDeleteDeckMutation,
+  useGetDeckByIdQuery,
+  useGetDeckCardsQuery,
+  useGetDecksQuery,
   useUpdateDeckMutation,
 } = decksService
