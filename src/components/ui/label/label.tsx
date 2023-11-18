@@ -6,18 +6,18 @@ import { clsx } from 'clsx'
 import s from './label.module.scss'
 
 export type LabelProps = {
-  label?: ReactNode
+    label?: ReactNode
 } & ComponentPropsWithoutRef<'label'>
 
 export const Label: FC<LabelProps> = ({ children, className, label, ...rest }) => {
-  const classNames = {
-    label: clsx(s.label, className),
-  }
+    const classNames = {
+        label: clsx(s.label, className),
+    }
 
-  return (
-    <LabelRadixUI.Root {...rest}>
-      {label && <div className={classNames.label}>{label}</div>}
-      {children}
-    </LabelRadixUI.Root>
-  )
+    return (
+        <LabelRadixUI.Root {...rest}>
+            {label && <div className={classNames.label}>{label}</div>}
+            {children}
+        </LabelRadixUI.Root>
+    )
 }
