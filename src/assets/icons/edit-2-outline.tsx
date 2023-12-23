@@ -1,15 +1,14 @@
-import { Ref, SVGProps, forwardRef, memo } from 'react'
-const SvgComponent = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+import { SVGProps } from 'react'
+const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
     <svg
         fill={'none'}
         height={'16'}
-        ref={ref}
         viewBox={'0 0 16 16'}
         width={'16'}
         xmlns={'http://www.w3.org/2000/svg'}
         {...props}
     >
-        <g clipPath={'url(#clip0_5918_2436)'}>
+        <g clipPath={'url(#clip0_28366_3239)'}>
             <path
                 d={
                     'M12.6666 13.3334H3.33329C3.15648 13.3334 2.98691 13.4036 2.86189 13.5286C2.73686 13.6537 2.66663 13.8232 2.66663 14C2.66663 14.1769 2.73686 14.3464 2.86189 14.4714C2.98691 14.5965 3.15648 14.6667 3.33329 14.6667H12.6666C12.8434 14.6667 13.013 14.5965 13.138 14.4714C13.2631 14.3464 13.3333 14.1769 13.3333 14C13.3333 13.8232 13.2631 13.6537 13.138 13.5286C13.013 13.4036 12.8434 13.3334 12.6666 13.3334Z'
@@ -24,13 +23,11 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) =
             />
         </g>
         <defs>
-            <clipPath id={'clip0_5918_2436'}>
+            <clipPath id={'clip0_28366_3239'}>
                 <rect fill={'white'} height={'16'} width={'16'} />
             </clipPath>
         </defs>
     </svg>
 )
-const ForwardRef = forwardRef(SvgComponent)
-const Memo = memo(ForwardRef)
 
-export default Memo
+export default SvgComponent

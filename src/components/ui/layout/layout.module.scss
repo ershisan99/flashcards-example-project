@@ -1,0 +1,10 @@
+.layout {
+}
+.main {
+  padding-top: var(--header-height);
+  padding-inline: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}

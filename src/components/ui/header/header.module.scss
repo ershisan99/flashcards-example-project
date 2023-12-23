@@ -1,0 +1,13 @@
+.header {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: var(--header-height);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--Dark-500, #333);
+  background: var(--Dark-700, #171717);
+}

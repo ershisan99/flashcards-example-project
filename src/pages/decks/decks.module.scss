@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.filter {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-block: 36px;
+  align-items: center;
+  width: 100%;
+  gap: 24px;
+
+  > * {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+}
