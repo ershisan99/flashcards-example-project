@@ -7,9 +7,9 @@ import s from './page.module.scss'
 export type PageProps = ComponentPropsWithoutRef<'div'>
 
 export const Page = forwardRef<HTMLDivElement, PageProps>(({ className, ...props }, ref) => {
-    const classNames = {
-        root: clsx(s.root, className),
-    }
+  const classNames = {
+    root: clsx(s.root, className),
+  }
 
-    return <div {...props} className={classNames.root} ref={ref} />
+  return <div {...props} className={classNames.root} ref={ref} />
 })
