@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 import { Button, Page, Slider, TextField, Typography } from '@/components'
+import { DecksTable } from '@/components'
 import { DeckDialog } from '@/components/decks/deck-dialog'
-import { DecksTable } from '@/components/decks/decks-table'
 import { DeleteDeckDialog } from '@/components/decks/delete-deck-dialog'
 import { Pagination } from '@/components/ui/pagination'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
