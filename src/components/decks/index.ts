@@ -1,2 +1,2 @@
-export * from './decks-table.tsx'
-export * from './cards-table.tsx'
+export * from './decks-table'
+export * from './cards-table'
