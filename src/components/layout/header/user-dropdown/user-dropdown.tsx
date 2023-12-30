@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { Logout, PersonOutline } from '@/assets'
 import {
   Avatar,
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -27,9 +26,12 @@ export const UserDropdown = ({ avatar, email, onLogout, userName }: UserDropdown
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button rounded variant={'icon'}>
+        <button className={s.trigger}>
+          <Typography className={s.name} variant={'subtitle1'}>
+            {userName}
+          </Typography>
           <Avatar src={avatar} />
-        </Button>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>

@@ -9,29 +9,22 @@ const DropdownMenu = DropdownMenuPrimitive.Root
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 
-const DropdownMenuGroup = DropdownMenuPrimitive.Group
-
-const DropdownMenuPortal = DropdownMenuPrimitive.Portal
-
-const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
-
 const DropdownMenuContent = forwardRef<
   ElementRef<typeof DropdownMenuPrimitive.Content>,
   ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ children, className, sideOffset = 8, ...props }, ref) => (
+>(({ align = 'end', children, className, sideOffset = 8, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
+      align={align}
       className={clsx(s.content, className)}
       ref={ref}
       sideOffset={sideOffset}
       {...props}
     >
-      <div>
-        <DropdownMenuPrimitive.Arrow asChild className={s.arrowBox}>
-          <div className={s.arrow} />
-        </DropdownMenuPrimitive.Arrow>
-        <div className={s.itemsBox}>{children}</div>
-      </div>
+      <DropdownMenuPrimitive.Arrow asChild>
+        <div className={s.arrow} />
+      </DropdownMenuPrimitive.Arrow>
+      <div className={s.itemsBox}>{children}</div>
     </DropdownMenuPrimitive.Content>
   </DropdownMenuPrimitive.Portal>
 ))
@@ -68,11 +61,8 @@ DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
 export {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuRadioGroup,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 }
