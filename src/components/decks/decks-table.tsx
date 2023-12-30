@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
 import {
-  Button,
   Column,
   Table,
   TableBody,
@@ -15,6 +14,7 @@ import { Deck } from '@/services/decks'
 import { formatDate } from '@/utils'
 
 import s from './decks-table.module.scss'
+
 const columns: Column[] = [
   {
     key: 'name',
@@ -64,17 +64,17 @@ export const DecksTable = ({ currentUserId, decks, onDeleteClick, onEditClick }:
             <TableCell>{deck.author.name}</TableCell>
             <TableCell>
               <div className={s.iconsContainer}>
-                <Button as={Link} to={`/decks/${deck.id}/learn`} variant={'icon'}>
+                <Link to={`/decks/${deck.id}/learn`}>
                   <PlayCircleOutline />
-                </Button>
+                </Link>
                 {deck.author.id === currentUserId && (
                   <>
-                    <Button onClick={handleEditClick(deck.id)} variant={'icon'}>
+                    <button onClick={handleEditClick(deck.id)}>
                       <Edit2Outline />
-                    </Button>
-                    <Button onClick={handleDeleteClick(deck.id)} variant={'icon'}>
+                    </button>
+                    <button onClick={handleDeleteClick(deck.id)}>
                       <TrashOutline />
-                    </Button>
+                    </button>
                   </>
                 )}
               </div>

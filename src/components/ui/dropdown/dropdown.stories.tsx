@@ -55,7 +55,7 @@ export const HeaderDropdown: Story = {
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button rounded variant={'icon'}>
+        <Button>
           <Avatar src={'https://avatars.githubusercontent.com/u/1196870?v=4'} />
         </Button>
       </DropdownMenuTrigger>
