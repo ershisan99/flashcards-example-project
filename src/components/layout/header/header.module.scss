@@ -1,0 +1,18 @@
+.root {
+  width: 100%;
+  height: var(--header-height);
+  padding: 12px var(--horizontal-padding);
+
+  background: var(--color-dark-700);
+  border-bottom: 1px solid var(--color-dark-500);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
