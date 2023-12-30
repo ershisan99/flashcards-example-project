@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 :root {
   /* outlines */
   --color-outline-focus: var(--color-info-900);
@@ -11,4 +13,12 @@
 
   /* header */
   --header-height: 60px;
+
+  /* max-width */
+  --horizontal-padding: 16px;
+  --max-width: calc(1005px + var(--horizontal-padding) * 2);
+
+  @include md-up {
+    --horizontal-padding: 24px;
+  }
 }

@@ -5,20 +5,13 @@ import {
   DecksResponse,
   GetDecksArgs,
   UpdateDeckArgs,
-} from './decks.types'
-import { baseApi } from '@/services'
+  baseApi,
+} from '@/services'
 
 const decksService = baseApi.injectEndpoints({
   endpoints: builder => ({
     createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
       invalidatesTags: ['Decks'],
-      onQueryStarted: async (_, { dispatch, getCacheEntry, getState, queryFulfilled }) => {
-        const data = getCacheEntry()
-        const state = getState()
-
-        decksService.util.re
-        await queryFulfilled
-      },
       query: body => ({
         body,
         method: 'POST',

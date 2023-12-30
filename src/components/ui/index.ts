@@ -1,4 +1,6 @@
-export * from './header'
+export * from './avatar'
+export * from './dropdown'
+export * from '../layout/header'
 export * from './button'
 export * from './card'
 export * from './typography'

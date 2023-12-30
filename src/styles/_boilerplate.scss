@@ -25,8 +25,15 @@ option {
   color: inherit;
 }
 
+a,
 a:visited {
-  color: inherit;
+  display: flex;
+  color: currentcolor;
+
+  &:focus-visible {
+    outline: var(--outline-focus);
+    outline-offset: 2px;
+  }
 }
 
 body {
