@@ -5,6 +5,7 @@ import { DeckDialog } from '@/components/decks/deck-dialog'
 import { DeleteDeckDialog } from '@/components/decks/delete-deck-dialog'
 import { Pagination } from '@/components/ui/pagination'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useMeQuery } from '@/services/auth/auth.service'
 import {
   Tab,
   useCreateDeckMutation,
@@ -25,6 +26,7 @@ import { useAppDispatch, useAppSelector } from '@/services/store'
 import s from './decks-page.module.scss'
 
 export const DecksPage = () => {
+  const { data: me } = useMeQuery()
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [deckToDeleteId, setDeckToDeleteId] = useState<null | string>(null)
   const [deckToEditId, setDeckToEditId] = useState<null | string>(null)
@@ -41,7 +43,8 @@ export const DecksPage = () => {
   const setMinCards = (minCards: number) => dispatch(decksSlice.actions.setMinCards(minCards))
   const setMaxCards = (maxCards: number) => dispatch(decksSlice.actions.setMaxCards(maxCards))
   const setSearch = (search: string) => dispatch(decksSlice.actions.setSearch(search))
-  const setCurrentTab = (tab: Tab) => dispatch(decksSlice.actions.setCurrentTab(tab))
+  const setCurrentTab = (tab: { authorId?: string; tab: Tab }) =>
+    dispatch(decksSlice.actions.setCurrentTab(tab))
 
   const resetFilters = () => {
     dispatch(decksSlice.actions.resetFilters())
@@ -54,16 +57,17 @@ export const DecksPage = () => {
     setMinCards(value[0])
     setMaxCards(value[1])
   }
-  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const currentUserId = me?.id
   const authorId = currentTab === 'my' ? currentUserId : undefined
-
-  const { data: decks } = useGetDecksQuery({
+  const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery({
     authorId,
     currentPage,
     maxCardsCount: maxCards,
     minCardsCount: minCards,
     name: search,
   })
+
+  const decks = decksCurrentData ?? decksData
 
   const showConfirmDeleteModal = !!deckToDeleteId
   const deckToDeleteName = decks?.items?.find(deck => deck.id === deckToDeleteId)?.name
@@ -73,9 +77,10 @@ export const DecksPage = () => {
   const [createDeck] = useCreateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
+
   const openCreateModal = () => setShowCreateModal(true)
 
-  if (!decks) {
+  if (!decks || !me) {
     return <div>loading...</div>
   }
 
@@ -110,14 +115,20 @@ export const DecksPage = () => {
           <Button onClick={openCreateModal}>Add new deck</Button>
           <DeckDialog
             onCancel={() => setShowCreateModal(false)}
-            onConfirm={createDeck}
+            onConfirm={data => {
+              resetFilters()
+              createDeck(data)
+            }}
             onOpenChange={setShowCreateModal}
             open={showCreateModal}
           />
         </div>
         <div className={s.filters}>
           <TextField onValueChange={setSearch} placeholder={'Search'} search value={search} />
-          <Tabs onValueChange={value => setCurrentTab(value as Tab)} value={currentTab}>
+          <Tabs
+            onValueChange={value => setCurrentTab({ authorId: currentUserId, tab: value as Tab })}
+            value={currentTab}
+          >
             <TabsList>
               <TabsTrigger value={'my'}>My decks</TabsTrigger>
               <TabsTrigger value={'all'}>All decks</TabsTrigger>
@@ -135,7 +146,7 @@ export const DecksPage = () => {
           </Button>
         </div>
         <DecksTable
-          currentUserId={currentUserId}
+          currentUserId={currentUserId ?? ''}
           decks={decks?.items}
           onDeleteClick={setDeckToDeleteId}
           onEditClick={setDeckToEditId}
