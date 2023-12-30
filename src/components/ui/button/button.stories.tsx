@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { Logout } from '@/assets'
+
 import { Button } from './'
-import { Camera } from '@/assets'
 
 const meta = {
   argTypes: {
@@ -20,9 +21,16 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
+    children: 'Primary Button',
+    disabled: false,
+    variant: 'primary',
+  },
+}
+export const PrimaryWithIcon: Story = {
+  args: {
     children: (
       <>
-        Turn Camera On <Camera />
+        Sign out <Logout />
       </>
     ),
     disabled: false,
@@ -46,7 +54,7 @@ export const Tertiary: Story = {
 }
 export const Link: Story = {
   args: {
-    children: 'Tertiary Button',
+    children: 'Link Button',
     disabled: false,
     variant: 'link',
   },
@@ -63,7 +71,7 @@ export const FullWidth: Story = {
 
 export const AsLink: Story = {
   args: {
-    as: 'button',
+    as: 'a',
     children: 'Link that looks like a button',
     href: 'https://google.com',
     variant: 'primary',

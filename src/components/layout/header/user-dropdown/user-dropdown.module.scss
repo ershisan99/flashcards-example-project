@@ -1,3 +1,13 @@
 .email {
   color: var(--color-dark-100);
 }
+
+.trigger {
+  gap: 14px;
+  align-items: center;
+}
+
+.name {
+  text-decoration: underline dashed var(--color-light-100) 1px;
+  text-underline-offset: 6px;
+}
