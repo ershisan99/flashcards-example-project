@@ -1,3 +1,4 @@
+export * from './spinner'
 export * from './avatar'
 export * from './dropdown'
 export * from '../layout/header'

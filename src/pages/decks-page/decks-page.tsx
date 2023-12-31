@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button, DecksTable, Page, Slider, TextField, Typography } from '@/components'
+import { Button, DecksTable, Page, Slider, Spinner, TextField, Typography } from '@/components'
 import { DeckDialog } from '@/components/decks/deck-dialog'
 import { DeleteDeckDialog } from '@/components/decks/delete-deck-dialog'
 import { Pagination } from '@/components/ui/pagination'
@@ -81,7 +81,7 @@ export const DecksPage = () => {
   const openCreateModal = () => setShowCreateModal(true)
 
   if (!decks || !me) {
-    return <div>loading...</div>
+    return <Spinner fullScreen />
   }
 
   return (

@@ -1,27 +1,36 @@
 import { ReactNode } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useOutletContext } from 'react-router-dom'
 
-import { Header, HeaderProps } from '@/components'
+import { Header, HeaderProps, Spinner } from '@/components'
 import { useMeQuery } from '@/services/auth/auth.service'
 
 import s from './layout.module.scss'
 
+type AuthContext = {
+  isAuthenticated: boolean
+}
+
+export function useAuthContext() {
+  return useOutletContext<AuthContext>()
+}
+
 export const Layout = () => {
   const { data, isError, isLoading } = useMeQuery()
+  const isAuthenticated = !isError && !isLoading
 
   if (isLoading) {
-    return <div>loading...</div>
+    return <Spinner fullScreen />
   }
 
   return (
     <LayoutPrimitive
       avatar={data?.avatar ?? null}
       email={data?.email ?? ''}
-      isLoggedIn={!isError && !!data}
+      isLoggedIn={isAuthenticated}
       onLogout={() => {}}
       userName={data?.name ?? ''}
     >
-      <Outlet />
+      <Outlet context={{ isAuthenticated } satisfies AuthContext} />
     </LayoutPrimitive>
   )
 }
