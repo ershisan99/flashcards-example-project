@@ -7,6 +7,19 @@
   width: 100%;
 }
 
+.valueDisplay {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 36px;
+
+  border: 1px solid var(--color-dark-300);
+  border-radius: 2px;
+}
+
 .root {
   touch-action: none;
   user-select: none;
@@ -25,14 +38,14 @@
   width: 100%;
   height: 4px;
 
-  opacity: 0.5;
-  background-color: var(--color-accent-500);
+  background-color: rgb(140 97 255 / 50%);
   border-radius: 2px;
 }
 
 .range {
   position: absolute;
   height: 100%;
+  opacity: 1;
   background-color: var(--color-accent-500);
 }
 
@@ -40,13 +53,31 @@
   touch-action: pan-x;
   cursor: pointer;
 
+  position: relative;
+
   display: block;
 
   width: 16px;
   height: 16px;
 
-  background-color: var(--color-light-100);
+  background-color: var(--color-accent-500);
   border-radius: 9999px;
+  outline: none;
 
   transition: transform 0.2s ease-in-out;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 8px;
+    height: 8px;
+
+    background-color: var(--color-light-100);
+    border-radius: 9999px;
+  }
 }
