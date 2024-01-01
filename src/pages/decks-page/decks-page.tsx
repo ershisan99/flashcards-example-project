@@ -8,7 +8,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useDeckSearchParams } from '@/pages/decks-page/use-deck-search-params'
 import { useMeQuery } from '@/services/auth/auth.service'
 import {
-  Tab,
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
@@ -83,6 +82,11 @@ export const DecksPage = () => {
     setMaxCards(value[1])
   }
 
+  const handleTabChange = (tab: string) => {
+    setCurrentPage(null)
+    setCurrentTab(tab)
+  }
+
   if (!decks || !me) {
     return <Spinner fullScreen />
   }
@@ -133,10 +137,7 @@ export const DecksPage = () => {
             search
             value={search ?? ''}
           />
-          <Tabs
-            onValueChange={value => setCurrentTab(value as Tab)}
-            value={currentTab ?? undefined}
-          >
+          <Tabs onValueChange={handleTabChange} value={currentTab ?? undefined}>
             <TabsList>
               <TabsTrigger value={'my'}>My decks</TabsTrigger>
               <TabsTrigger value={'all'}>All decks</TabsTrigger>
