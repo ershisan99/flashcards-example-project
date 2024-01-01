@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
 import {
+  Button,
   Column,
+  Sort,
   Table,
   TableBody,
   TableCell,
@@ -43,15 +45,24 @@ type Props = {
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onSort: (key: Sort) => void
+  sort: Sort
 }
 
-export const DecksTable = ({ currentUserId, decks, onDeleteClick, onEditClick }: Props) => {
+export const DecksTable = ({
+  currentUserId,
+  decks,
+  onDeleteClick,
+  onEditClick,
+  onSort,
+  sort,
+}: Props) => {
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
 
   return (
     <Table>
-      <TableHeader columns={columns} />
+      <TableHeader columns={columns} onSort={onSort} sort={sort} />
       <TableBody>
         {decks?.map(deck => (
           <TableRow key={deck.id}>
@@ -65,17 +76,17 @@ export const DecksTable = ({ currentUserId, decks, onDeleteClick, onEditClick }:
             <TableCell>{deck.author.name}</TableCell>
             <TableCell>
               <div className={s.iconsContainer}>
-                <Link to={`/decks/${deck.id}/learn`}>
+                <Button as={Link} to={`/decks/${deck.id}/learn`} variant={'icon'}>
                   <PlayCircleOutline />
-                </Link>
+                </Button>
                 {deck.author.id === currentUserId && (
                   <>
-                    <button onClick={handleEditClick(deck.id)}>
+                    <Button onClick={handleEditClick(deck.id)} variant={'icon'}>
                       <Edit2Outline />
-                    </button>
-                    <button onClick={handleDeleteClick(deck.id)}>
+                    </Button>
+                    <Button onClick={handleDeleteClick(deck.id)} variant={'icon'}>
                       <TrashOutline />
-                    </button>
+                    </Button>
                   </>
                 )}
               </div>

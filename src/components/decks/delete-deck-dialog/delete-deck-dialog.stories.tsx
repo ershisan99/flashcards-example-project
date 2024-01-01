@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
-import { DeleteDeckDialog } from './'
 import { Button } from '@/components'
 import { Meta, StoryObj } from '@storybook/react'
+
+import { DeleteDeckDialog } from './'
 
 const meta = {
   component: DeleteDeckDialog,

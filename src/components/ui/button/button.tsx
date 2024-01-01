@@ -16,7 +16,7 @@ export type ButtonProps<T extends ElementType = 'button'> = {
   children: ReactNode
   className?: string
   fullWidth?: boolean
-  variant?: 'link' | 'primary' | 'secondary' | 'tertiary'
+  variant?: 'icon' | 'link' | 'primary' | 'secondary' | 'tertiary'
 } & ComponentPropsWithoutRef<T>
 
 const ButtonPolymorph = <T extends ElementType = 'button'>(props: ButtonProps<T>, ref: any) => {
@@ -31,7 +31,7 @@ const ButtonPolymorph = <T extends ElementType = 'button'>(props: ButtonProps<T>
 
   return (
     <Component
-      className={clsx(s.button, s[variant], fullWidth && s.fullWidth, className)}
+      className={clsx(s[variant], fullWidth && s.fullWidth, className)}
       {...rest}
       ref={ref}
     />

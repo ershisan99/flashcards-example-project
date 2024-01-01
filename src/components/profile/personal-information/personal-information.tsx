@@ -1,7 +1,7 @@
+import s from './personal-information.module.scss'
+
 import { Camera, Edit, Logout } from '../../../assets/icons'
 import { Button, Card, Typography } from '../../ui'
-
-import s from './personal-information.module.scss'
 
 type Props = {
   avatar: string

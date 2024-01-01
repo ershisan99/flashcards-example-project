@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
+import s from './check-email.module.scss'
+
 import { Email } from '../../../assets/icons'
 import { Button, Card, Typography } from '../../ui'
-
-import s from './check-email.module.scss'
 
 type Props = {
   email: string

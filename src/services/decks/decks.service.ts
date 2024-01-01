@@ -8,6 +8,7 @@ import {
   baseApi,
 } from '@/services'
 import { RootState } from '@/services/store'
+import { getValuable } from '@/utils'
 
 const decksService = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -16,13 +17,10 @@ const decksService = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
         const res = await queryFulfilled
 
-        console.log(decksService.util.selectCachedArgsForQuery(getState(), 'getDecks'))
         for (const { endpointName, originalArgs } of decksService.util.selectInvalidatedBy(
           getState(),
           [{ type: 'Decks' }]
         )) {
-          console.log(endpointName, originalArgs)
-          // we only want to update `getPosts` here
           if (endpointName !== 'getDecks') {
             continue
           }
@@ -32,31 +30,6 @@ const decksService = baseApi.injectEndpoints({
             })
           )
         }
-
-        // console.log(args)
-        // const minCardsCount = state.decks.minCards
-        // const search = state.decks.search
-        // const currentPage = state.decks.currentPage
-        // const maxCardsCount = state.decks.maxCards
-        // const authorId = state.decks.authorId
-        //
-        // console.log(res)
-        //
-        // dispatch(
-        //   decksService.util.updateQueryData(
-        //     'getDecks',
-        //     {
-        //       authorId,
-        //       currentPage,
-        //       maxCardsCount,
-        //       minCardsCount,
-        //       name: search,
-        //     },
-        //     draft => {
-        //       draft.items.unshift(res.data)
-        //     }
-        //   )
-        // )
       },
       query: body => ({
         body,
@@ -81,7 +54,7 @@ const decksService = baseApi.injectEndpoints({
       providesTags: ['Decks'],
       query: args => {
         return {
-          params: args ?? undefined,
+          params: args ? getValuable(args) : undefined,
           url: `v1/decks`,
         }
       },
@@ -91,7 +64,6 @@ const decksService = baseApi.injectEndpoints({
       async onQueryStarted({ id, ...patch }, { dispatch, getState, queryFulfilled }) {
         const state = getState() as RootState
 
-        console.log(state)
         const minCardsCount = state.decks.minCards
         const search = state.decks.search
         const currentPage = state.decks.currentPage

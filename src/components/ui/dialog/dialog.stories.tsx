@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-import { Dialog } from './'
 import { Meta, StoryObj } from '@storybook/react'
+
+import { Dialog } from './'
 
 const meta = {
   component: Dialog,

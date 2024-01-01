@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
-import { DeckDialog } from './'
 import { Button } from '@/components'
 import { Meta, StoryObj } from '@storybook/react'
+
+import { DeckDialog } from './'
 
 const meta = {
   component: DeckDialog,

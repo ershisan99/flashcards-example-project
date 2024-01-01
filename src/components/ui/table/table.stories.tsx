@@ -1,6 +1,7 @@
-import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeadCell, TableRow } from './'
 import { Typography } from '@/components'
 import { Meta } from '@storybook/react'
+
+import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeadCell, TableRow } from './'
 
 export default {
   component: Table,

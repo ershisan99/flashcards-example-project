@@ -1,10 +1,11 @@
 import { FC } from 'react'
 
-import { usePagination } from './usePagination'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@/assets'
 import { clsx } from 'clsx'
 
 import s from './pagination.module.scss'
+
+import { usePagination } from './usePagination'
 
 type PaginationConditionals =
   | {

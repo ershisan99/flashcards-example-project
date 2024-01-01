@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-import { Checkbox } from './checkbox'
 import { Meta, StoryObj } from '@storybook/react'
+
+import { Checkbox } from './checkbox'
 const meta = {
   component: Checkbox,
   tags: ['autodocs'],

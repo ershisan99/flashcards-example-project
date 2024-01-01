@@ -5,6 +5,7 @@ import { DeckDialog } from '@/components/decks/deck-dialog'
 import { DeleteDeckDialog } from '@/components/decks/delete-deck-dialog'
 import { Pagination } from '@/components/ui/pagination'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useDeckSearchParams } from '@/pages/decks-page/use-deck-search-params'
 import { useMeQuery } from '@/services/auth/auth.service'
 import {
   Tab,
@@ -13,15 +14,6 @@ import {
   useGetDecksQuery,
   useUpdateDeckMutation,
 } from '@/services/decks'
-import {
-  selectDecksCurrentPage,
-  selectDecksCurrentTab,
-  selectDecksMaxCards,
-  selectDecksMinCards,
-  selectDecksSearch,
-} from '@/services/decks/decks.selectors'
-import { decksSlice } from '@/services/decks/decks.slice'
-import { useAppDispatch, useAppSelector } from '@/services/store'
 
 import s from './decks-page.module.scss'
 
@@ -33,40 +25,41 @@ export const DecksPage = () => {
 
   const showEditModal = !!deckToEditId
 
-  const dispatch = useAppDispatch()
-  const currentPage = useAppSelector(selectDecksCurrentPage)
-  const minCards = useAppSelector(selectDecksMinCards)
-  const maxCards = useAppSelector(selectDecksMaxCards)
-  const currentTab = useAppSelector(selectDecksCurrentTab)
-  const search = useAppSelector(selectDecksSearch)
-  const setCurrentPage = (page: number) => dispatch(decksSlice.actions.setCurrentPage(page))
-  const setMinCards = (minCards: number) => dispatch(decksSlice.actions.setMinCards(minCards))
-  const setMaxCards = (maxCards: number) => dispatch(decksSlice.actions.setMaxCards(maxCards))
-  const setSearch = (search: string) => dispatch(decksSlice.actions.setSearch(search))
-  const setCurrentTab = (tab: { authorId?: string; tab: Tab }) =>
-    dispatch(decksSlice.actions.setCurrentTab(tab))
+  const {
+    currentPage,
+    currentTab,
+    maxCardsCount,
+    minCardsCount,
+    rangeValue,
+    search,
+    setCurrentPage,
+    setCurrentTab,
+    setMaxCards,
+    setMinCards,
+    setRangeValue,
+    setSearch,
+    setSort,
+    sort,
+  } = useDeckSearchParams()
 
-  const resetFilters = () => {
-    dispatch(decksSlice.actions.resetFilters())
-    setRangeValue([0, decks?.maxCardsCount || undefined])
-  }
-
-  const [rangeValue, setRangeValue] = useState([minCards, maxCards])
-
-  const handleSliderCommitted = (value: number[]) => {
-    setMinCards(value[0])
-    setMaxCards(value[1])
-  }
   const currentUserId = me?.id
   const authorId = currentTab === 'my' ? currentUserId : undefined
   const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery({
     authorId,
     currentPage,
-    maxCardsCount: maxCards,
-    minCardsCount: minCards,
+    maxCardsCount,
+    minCardsCount,
     name: search,
+    orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
   })
-
+  const resetFilters = () => {
+    setCurrentPage(null)
+    setSearch(null)
+    setMinCards(null)
+    setMaxCards(null)
+    setRangeValue([0, decks?.maxCardsCount ?? null])
+    setSort(null)
+  }
   const decks = decksCurrentData ?? decksData
 
   const showConfirmDeleteModal = !!deckToDeleteId
@@ -79,6 +72,16 @@ export const DecksPage = () => {
   const [updateDeck] = useUpdateDeckMutation()
 
   const openCreateModal = () => setShowCreateModal(true)
+
+  const handleSearch = (search: null | string) => {
+    setCurrentPage(null)
+    setSearch(search)
+  }
+  const handleSliderCommitted = (value: number[]) => {
+    setCurrentPage(null)
+    setMinCards(value[0])
+    setMaxCards(value[1])
+  }
 
   if (!decks || !me) {
     return <Spinner fullScreen />
@@ -124,10 +127,15 @@ export const DecksPage = () => {
           />
         </div>
         <div className={s.filters}>
-          <TextField onValueChange={setSearch} placeholder={'Search'} search value={search} />
+          <TextField
+            onValueChange={handleSearch}
+            placeholder={'Search'}
+            search
+            value={search ?? ''}
+          />
           <Tabs
-            onValueChange={value => setCurrentTab({ authorId: currentUserId, tab: value as Tab })}
-            value={currentTab}
+            onValueChange={value => setCurrentTab(value as Tab)}
+            value={currentTab ?? undefined}
           >
             <TabsList>
               <TabsTrigger value={'my'}>My decks</TabsTrigger>
@@ -150,11 +158,13 @@ export const DecksPage = () => {
           decks={decks?.items}
           onDeleteClick={setDeckToDeleteId}
           onEditClick={setDeckToEditId}
+          onSort={setSort}
+          sort={sort}
         />
         <Pagination
           count={decks?.pagination?.totalPages || 1}
           onChange={setCurrentPage}
-          page={currentPage}
+          page={currentPage ?? 1}
         />
       </div>
     </Page>

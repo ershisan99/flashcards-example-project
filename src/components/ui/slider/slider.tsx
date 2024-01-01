@@ -7,7 +7,7 @@ import s from './slider.module.scss'
 const Slider = forwardRef<
   ElementRef<typeof SliderPrimitive.Root>,
   Omit<ComponentPropsWithoutRef<typeof SliderPrimitive.Root>, 'value'> & {
-    value?: (number | undefined)[]
+    value?: (null | number)[]
   }
 >(({ className, max, onValueChange, value, ...props }, ref) => {
   useEffect(() => {
