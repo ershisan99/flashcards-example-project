@@ -137,7 +137,7 @@ export const DecksPage = () => {
             search
             value={search ?? ''}
           />
-          <Tabs onValueChange={handleTabChange} value={currentTab ?? undefined}>
+          <Tabs asChild onValueChange={handleTabChange} value={currentTab ?? undefined}>
             <TabsList>
               <TabsTrigger value={'my'}>My decks</TabsTrigger>
               <TabsTrigger value={'all'}>All decks</TabsTrigger>
@@ -163,6 +163,7 @@ export const DecksPage = () => {
           sort={sort}
         />
         <Pagination
+          className={s.pagination}
           count={decks?.pagination?.totalPages || 1}
           onChange={setCurrentPage}
           page={currentPage ?? 1}
