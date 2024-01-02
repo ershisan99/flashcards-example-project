@@ -13,5 +13,9 @@
   display: flex;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 16px;
-  margin-bottom: 16px;
+  margin: 10px 0 16px;
+}
+
+.pagination {
+  margin-top: 24px;
 }

@@ -1,14 +1,15 @@
 import { useForm } from 'react-hook-form'
 
-import { Button, Card, ControlledTextField, Typography } from '../../ui'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 import s from './new-password.module.scss'
 
+import { Button, Card, ControlledTextField, Typography } from '../../ui'
+
 const schema = z.object({
-  password: z.string().nonempty('Enter password'),
+  password: z.string().min(1, 'Enter password'),
 })
 
 type FormType = z.infer<typeof schema>

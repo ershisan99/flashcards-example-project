@@ -16,13 +16,17 @@ import {
 import s from './user-dropdown.module.scss'
 
 export type UserDropdownProps = {
-  avatar: string
+  avatar: null | string
   email: string
   onLogout: ComponentPropsWithoutRef<typeof DropdownMenuItem>['onSelect']
   userName: string
 }
 
 export const UserDropdown = ({ avatar, email, onLogout, userName }: UserDropdownProps) => {
+  if (!avatar) {
+    avatar = `https://ui-avatars.com/api/?name=${userName.split(' ').join('+')}`
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

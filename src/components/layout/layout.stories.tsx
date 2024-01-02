@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Layout } from './'
+import { LayoutPrimitive } from './'
 
 const meta = {
   argTypes: {
     onLogout: { action: 'logout' },
   },
-  component: Layout,
+  component: LayoutPrimitive,
   parameters: {
     layout: 'fullscreen',
   },
   tags: ['autodocs'],
   title: 'Components/Layout',
-} satisfies Meta<typeof Layout>
+} satisfies Meta<typeof LayoutPrimitive>
 
 export default meta
 type Story = StoryObj<typeof meta>

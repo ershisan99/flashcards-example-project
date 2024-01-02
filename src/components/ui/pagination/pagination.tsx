@@ -1,10 +1,11 @@
-import { FC } from 'react'
+import { ComponentPropsWithoutRef, FC } from 'react'
 
-import { usePagination } from './usePagination'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@/assets'
 import { clsx } from 'clsx'
 
 import s from './pagination.module.scss'
+
+import { usePagination } from './usePagination'
 
 type PaginationConditionals =
   | {
@@ -26,8 +27,8 @@ export type PaginationProps = {
   perPage?: number
   perPageOptions?: number[]
   siblings?: number
-} & PaginationConditionals
-
+} & PaginationConditionals &
+  Omit<ComponentPropsWithoutRef<'div'>, 'onChange'>
 const classNames = {
   container: s.container,
   dots: s.dots,
@@ -36,12 +37,15 @@ const classNames = {
   pageButton(selected?: boolean) {
     return clsx(this.item, selected && s.selected)
   },
-  root: s.root,
+  root(className?: string) {
+    return clsx(s.root, className)
+  },
   select: s.select,
   selectBox: s.selectBox,
 }
 
 export const Pagination: FC<PaginationProps> = ({
+  className,
   count,
   onChange,
   onPerPageChange,
@@ -49,6 +53,7 @@ export const Pagination: FC<PaginationProps> = ({
   perPage = null,
   perPageOptions,
   siblings,
+  ...rest
 }) => {
   const {
     handleMainPageClicked,
@@ -67,7 +72,7 @@ export const Pagination: FC<PaginationProps> = ({
   const showPerPageSelect = !!perPage && !!perPageOptions && !!onPerPageChange
 
   return (
-    <div className={classNames.root}>
+    <div className={classNames.root(className)} {...rest}>
       <div className={classNames.container}>
         <PrevButton disabled={isFirstPage} onClick={handlePreviousPageClicked} />
 

@@ -8,7 +8,7 @@ import s from './deck-dialog.module.scss'
 
 const newDeckSchema = z.object({
   isPrivate: z.boolean(),
-  name: z.string().min(3).max(50),
+  name: z.string().min(3).max(5000),
 })
 
 type FormValues = z.infer<typeof newDeckSchema>

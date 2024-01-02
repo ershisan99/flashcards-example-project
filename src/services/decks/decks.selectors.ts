@@ -1,4 +1,4 @@
-import { RootState } from '@/services/store.ts'
+import { RootState } from '@/services/store'
 
 export const selectDecksCurrentPage = (state: RootState) => state.decks.currentPage
 

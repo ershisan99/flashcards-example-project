@@ -1,1 +1,1 @@
-export * from './deck-dialog.tsx'
+export * from './deck-dialog'

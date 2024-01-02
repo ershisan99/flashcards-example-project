@@ -7,7 +7,7 @@ import s from './slider.module.scss'
 const Slider = forwardRef<
   ElementRef<typeof SliderPrimitive.Root>,
   Omit<ComponentPropsWithoutRef<typeof SliderPrimitive.Root>, 'value'> & {
-    value?: (number | undefined)[]
+    value: (null | number)[]
   }
 >(({ className, max, onValueChange, value, ...props }, ref) => {
   useEffect(() => {
@@ -18,7 +18,7 @@ const Slider = forwardRef<
 
   return (
     <div className={s.container}>
-      <span>{value?.[0]}</span>
+      <span className={s.valueDisplay}>{value?.[0]}</span>
       <SliderPrimitive.Root
         className={clsx(s.root, className)}
         max={max}
@@ -28,12 +28,12 @@ const Slider = forwardRef<
         value={[value?.[0] ?? 0, value?.[1] ?? max ?? 0]}
       >
         <SliderPrimitive.Track className={s.track}>
-          <SliderPrimitive.Range className={'absolute h-full bg-primary'} />
+          <SliderPrimitive.Range className={s.range} />
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb className={s.thumb} />
         <SliderPrimitive.Thumb className={s.thumb} />
       </SliderPrimitive.Root>
-      <span>{value?.[1]}</span>
+      <span className={s.valueDisplay}>{value?.[1]}</span>
     </div>
   )
 })

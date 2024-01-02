@@ -38,6 +38,9 @@ dependencies:
   '@storybook/theming':
     specifier: ^7.6.6
     version: 7.6.6(react-dom@18.2.0)(react@18.2.0)
+  async-mutex:
+    specifier: ^0.4.0
+    version: 0.4.0
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
@@ -80,8 +83,8 @@ devDependencies:
     specifier: ^0.1.2
     version: 0.1.2
   '@it-incubator/stylelint-config':
-    specifier: ^1.0.1
-    version: 1.0.1(stylelint-config-clean-order@5.2.0)(stylelint-config-standard-scss@12.0.0)(stylelint@16.1.0)
+    specifier: ^1.0.2
+    version: 1.0.2(stylelint-config-clean-order@5.2.0)(stylelint-config-standard-scss@12.0.0)(stylelint@16.1.0)
   '@storybook/addon-essentials':
     specifier: ^7.6.6
     version: 7.6.6(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -2175,8 +2178,8 @@ packages:
       prettier: 3.0.0
     dev: true
 
-  /@it-incubator/stylelint-config@1.0.1(stylelint-config-clean-order@5.2.0)(stylelint-config-standard-scss@12.0.0)(stylelint@16.1.0):
-    resolution: {integrity: sha512-dZuCX0wXtuNwU0BoNM1fbfo9V9DIG4IhtZ67cOgTsv7/zXFOxXCPiOSx2SguCA7sg4P62/oq2pMQq/x/Y4Edag==}
+  /@it-incubator/stylelint-config@1.0.2(stylelint-config-clean-order@5.2.0)(stylelint-config-standard-scss@12.0.0)(stylelint@16.1.0):
+    resolution: {integrity: sha512-2LIducOMyfhFOGV1GvmpWjjvgRGhEtHw/qBv3Vjw+Nel8jCl9cpH2yJrdehK1QJSOkzvQGs2pPQViouW9FQUCA==}
     peerDependencies:
       stylelint: 16.1.0
       stylelint-config-clean-order: 5.2.0
@@ -4853,6 +4856,12 @@ packages:
   /async-limiter@1.0.1:
     resolution: {integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==}
     dev: true
+
+  /async-mutex@0.4.0:
+    resolution: {integrity: sha512-eJFZ1YhRR8UN8eBLoNzcDPcy/jqjsg6I1AP+KvWQX80BqOSW1oJPJXDylPUEeMr2ZQvHgnQ//Lp6f3RQ1zI7HA==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
 
   /async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}

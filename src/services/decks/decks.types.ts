@@ -54,13 +54,13 @@ export type Card = {
 }
 
 export type GetDecksArgs = {
-  authorId?: string
-  currentPage?: number
-  itemsPerPage?: number
-  maxCardsCount?: number
-  minCardsCount?: number
-  name?: string
-  orderBy?: string
+  authorId?: null | string
+  currentPage?: null | number
+  itemsPerPage?: null | number
+  maxCardsCount?: null | number
+  minCardsCount?: null | number
+  name?: null | string
+  orderBy?: null | string
 }
 
 export type CreateDeckArgs = {

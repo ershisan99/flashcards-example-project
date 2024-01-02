@@ -1,13 +1,14 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { Button, Card, ControlledTextField, Typography } from '../../ui'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { omit } from 'remeda'
 import { z } from 'zod'
 
 import s from './sign-up.module.scss'
+
+import { Button, Card, ControlledTextField, Typography } from '../../ui'
 
 const schema = z
   .object({

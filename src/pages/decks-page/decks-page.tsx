@@ -1,69 +1,65 @@
 import { useState } from 'react'
 
-import { Button, DecksTable, Page, Slider, TextField, Typography } from '@/components'
+import { Button, DecksTable, Page, Slider, Spinner, TextField, Typography } from '@/components'
 import { DeckDialog } from '@/components/decks/deck-dialog'
 import { DeleteDeckDialog } from '@/components/decks/delete-deck-dialog'
 import { Pagination } from '@/components/ui/pagination'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useDeckSearchParams } from '@/pages/decks-page/use-deck-search-params'
+import { useMeQuery } from '@/services/auth/auth.service'
 import {
-  Tab,
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
   useUpdateDeckMutation,
 } from '@/services/decks'
-import {
-  selectDecksCurrentPage,
-  selectDecksCurrentTab,
-  selectDecksMaxCards,
-  selectDecksMinCards,
-  selectDecksSearch,
-} from '@/services/decks/decks.selectors'
-import { decksSlice } from '@/services/decks/decks.slice'
-import { useAppDispatch, useAppSelector } from '@/services/store'
 
 import s from './decks-page.module.scss'
 
 export const DecksPage = () => {
+  const { data: me } = useMeQuery()
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [deckToDeleteId, setDeckToDeleteId] = useState<null | string>(null)
   const [deckToEditId, setDeckToEditId] = useState<null | string>(null)
 
   const showEditModal = !!deckToEditId
 
-  const dispatch = useAppDispatch()
-  const currentPage = useAppSelector(selectDecksCurrentPage)
-  const minCards = useAppSelector(selectDecksMinCards)
-  const maxCards = useAppSelector(selectDecksMaxCards)
-  const currentTab = useAppSelector(selectDecksCurrentTab)
-  const search = useAppSelector(selectDecksSearch)
-  const setCurrentPage = (page: number) => dispatch(decksSlice.actions.setCurrentPage(page))
-  const setMinCards = (minCards: number) => dispatch(decksSlice.actions.setMinCards(minCards))
-  const setMaxCards = (maxCards: number) => dispatch(decksSlice.actions.setMaxCards(maxCards))
-  const setSearch = (search: string) => dispatch(decksSlice.actions.setSearch(search))
-  const setCurrentTab = (tab: Tab) => dispatch(decksSlice.actions.setCurrentTab(tab))
+  const {
+    currentPage,
+    currentTab,
+    maxCardsCount,
+    minCardsCount,
+    rangeValue,
+    search,
+    setCurrentPage,
+    setCurrentTab,
+    setMaxCards,
+    setMinCards,
+    setRangeValue,
+    setSearch,
+    setSort,
+    sort,
+  } = useDeckSearchParams()
 
-  const resetFilters = () => {
-    dispatch(decksSlice.actions.resetFilters())
-    setRangeValue([0, decks?.maxCardsCount || undefined])
-  }
-
-  const [rangeValue, setRangeValue] = useState([minCards, maxCards])
-
-  const handleSliderCommitted = (value: number[]) => {
-    setMinCards(value[0])
-    setMaxCards(value[1])
-  }
-  const currentUserId = 'f2be95b9-4d07-4751-a775-bd612fc9553a'
+  const currentUserId = me?.id
   const authorId = currentTab === 'my' ? currentUserId : undefined
-
-  const { data: decks } = useGetDecksQuery({
+  const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery({
     authorId,
     currentPage,
-    maxCardsCount: maxCards,
-    minCardsCount: minCards,
+    maxCardsCount,
+    minCardsCount,
     name: search,
+    orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
   })
+  const resetFilters = () => {
+    setCurrentPage(null)
+    setSearch(null)
+    setMinCards(null)
+    setMaxCards(null)
+    setRangeValue([0, decks?.maxCardsCount ?? null])
+    setSort(null)
+  }
+  const decks = decksCurrentData ?? decksData
 
   const showConfirmDeleteModal = !!deckToDeleteId
   const deckToDeleteName = decks?.items?.find(deck => deck.id === deckToDeleteId)?.name
@@ -73,10 +69,26 @@ export const DecksPage = () => {
   const [createDeck] = useCreateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
+
   const openCreateModal = () => setShowCreateModal(true)
 
-  if (!decks) {
-    return <div>loading...</div>
+  const handleSearch = (search: null | string) => {
+    setCurrentPage(null)
+    setSearch(search)
+  }
+  const handleSliderCommitted = (value: number[]) => {
+    setCurrentPage(null)
+    setMinCards(value[0])
+    setMaxCards(value[1])
+  }
+
+  const handleTabChange = (tab: string) => {
+    setCurrentPage(null)
+    setCurrentTab(tab)
+  }
+
+  if (!decks || !me) {
+    return <Spinner fullScreen />
   }
 
   return (
@@ -110,14 +122,22 @@ export const DecksPage = () => {
           <Button onClick={openCreateModal}>Add new deck</Button>
           <DeckDialog
             onCancel={() => setShowCreateModal(false)}
-            onConfirm={createDeck}
+            onConfirm={data => {
+              resetFilters()
+              createDeck(data)
+            }}
             onOpenChange={setShowCreateModal}
             open={showCreateModal}
           />
         </div>
         <div className={s.filters}>
-          <TextField onValueChange={setSearch} placeholder={'Search'} search value={search} />
-          <Tabs onValueChange={value => setCurrentTab(value as Tab)} value={currentTab}>
+          <TextField
+            onValueChange={handleSearch}
+            placeholder={'Search'}
+            search
+            value={search ?? ''}
+          />
+          <Tabs asChild onValueChange={handleTabChange} value={currentTab ?? undefined}>
             <TabsList>
               <TabsTrigger value={'my'}>My decks</TabsTrigger>
               <TabsTrigger value={'all'}>All decks</TabsTrigger>
@@ -135,15 +155,18 @@ export const DecksPage = () => {
           </Button>
         </div>
         <DecksTable
-          currentUserId={currentUserId}
+          currentUserId={currentUserId ?? ''}
           decks={decks?.items}
           onDeleteClick={setDeckToDeleteId}
           onEditClick={setDeckToEditId}
+          onSort={setSort}
+          sort={sort}
         />
         <Pagination
+          className={s.pagination}
           count={decks?.pagination?.totalPages || 1}
           onChange={setCurrentPage}
-          page={currentPage}
+          page={currentPage ?? 1}
         />
       </div>
     </Page>

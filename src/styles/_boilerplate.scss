@@ -41,6 +41,8 @@ select,
 textarea,
 optgroup,
 option {
+  box-sizing: border-box;
+
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
