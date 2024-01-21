@@ -54,16 +54,16 @@ export const TableHeader: FC<
   }
 
   return (
-    <thead {...restProps}>
-      <tr>
+    <TableHead {...restProps}>
+      <TableRow>
         {columns.map(({ title, key, sortable }) => (
-          <th key={key} onClick={handleSort(key, sortable)}>
+          <TableHeadCell key={key} onClick={handleSort(key, sortable)}>
             {title}
             {sort && sort.key === key && <span>{sort.direction === 'asc' ? '▲' : '▼'}</span>}
-          </th>
+          </TableHeadCell>
         ))}
-      </tr>
-    </thead>
+      </TableRow>
+    </TableHead>
   )
 }
 export const TableBody = forwardRef<ElementRef<'tbody'>, ComponentPropsWithoutRef<'tbody'>>(
