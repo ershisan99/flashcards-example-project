@@ -1,0 +1,2 @@
+- [ ] component 1
+- [x] component 2

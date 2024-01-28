@@ -1,3 +1,5 @@
+import { getValuable } from '@/utils'
+
 import {
   CardsResponse,
   CreateDeckArgs,
@@ -6,9 +8,7 @@ import {
   GetDecksArgs,
   UpdateDeckArgs,
   baseApi,
-} from '@/services'
-import { RootState } from '@/services/store'
-import { getValuable } from '@/utils'
+} from '../'
 
 const decksService = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -21,6 +21,7 @@ const decksService = baseApi.injectEndpoints({
           getState(),
           [{ type: 'Decks' }]
         )) {
+          // we only want to update `getPosts` here
           if (endpointName !== 'getDecks') {
             continue
           }
@@ -39,6 +40,35 @@ const decksService = baseApi.injectEndpoints({
     }),
     deleteDeck: builder.mutation<void, { id: string }>({
       invalidatesTags: ['Decks'],
+      async onQueryStarted({ id }, { dispatch, getState, queryFulfilled }) {
+        let patchResult: any
+
+        for (const { endpointName, originalArgs } of decksService.util.selectInvalidatedBy(
+          getState(),
+          [{ type: 'Decks' }]
+        )) {
+          console.log(endpointName, originalArgs)
+          // we only want to update `getPosts` here
+          if (endpointName !== 'getDecks') {
+            continue
+          }
+          patchResult = dispatch(
+            decksService.util.updateQueryData(endpointName, originalArgs, draft => {
+              const index = draft?.items?.findIndex(deck => deck.id === id)
+
+              if (index !== undefined && index !== -1) {
+                draft?.items?.splice(index, 1)
+              }
+            })
+          )
+        }
+
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult?.undo()
+        }
+      },
       query: ({ id }) => ({
         method: 'DELETE',
         url: `v1/decks/${id}`,
@@ -61,40 +91,32 @@ const decksService = baseApi.injectEndpoints({
     }),
     updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
       invalidatesTags: ['Decks'],
-      async onQueryStarted({ id, ...patch }, { dispatch, getState, queryFulfilled }) {
-        const state = getState() as RootState
+      async onQueryStarted({ id, ...data }, { dispatch, getState, queryFulfilled }) {
+        let patchResult: any
 
-        const minCardsCount = state.decks.minCards
-        const search = state.decks.search
-        const currentPage = state.decks.currentPage
-        const maxCardsCount = state.decks.maxCards
-        const authorId = state.decks.authorId
+        for (const { endpointName, originalArgs } of decksService.util.selectInvalidatedBy(
+          getState(),
+          [{ type: 'Decks' }]
+        )) {
+          if (endpointName !== 'getDecks') {
+            continue
+          }
+          patchResult = dispatch(
+            decksService.util.updateQueryData(endpointName, originalArgs, draft => {
+              const index = draft?.items?.findIndex(deck => deck.id === id)
 
-        const patchResult = dispatch(
-          decksService.util.updateQueryData(
-            'getDecks',
-            {
-              authorId,
-              currentPage,
-              maxCardsCount,
-              minCardsCount,
-              name: search,
-            },
-            draft => {
-              const deck = draft.items.find(deck => deck.id === id)
-
-              if (!deck) {
+              if (!index || index === -1) {
                 return
               }
-              Object.assign(deck, patch)
-            }
+              Object.assign(draft?.items?.[index], data)
+            })
           )
-        )
+        }
 
         try {
           await queryFulfilled
-        } catch {
-          patchResult.undo()
+        } catch (e) {
+          patchResult?.undo()
         }
       },
       query: ({ id, ...body }) => ({

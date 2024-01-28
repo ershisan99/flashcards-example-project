@@ -1,3 +1,4 @@
+import { router } from '@/router'
 import {
   BaseQueryFn,
   FetchArgs,
@@ -5,7 +6,6 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
-
 const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
@@ -19,6 +19,7 @@ export const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
+
   let result = await baseQuery(args, api, extraOptions)
 
   if (result.error && result.error.status === 401) {
@@ -26,7 +27,10 @@ export const baseQueryWithReauth: BaseQueryFn<
       const release = await mutex.acquire()
       // try to get a new token
       const refreshResult = await baseQuery(
-        { method: 'POST', url: '/v1/auth/refresh-token' },
+        {
+          method: 'POST',
+          url: '/v1/auth/refresh-token',
+        },
         api,
         extraOptions
       )
@@ -34,6 +38,8 @@ export const baseQueryWithReauth: BaseQueryFn<
       if (refreshResult.meta?.response?.status === 204) {
         // retry the initial query
         result = await baseQuery(args, api, extraOptions)
+      } else {
+        await router.navigate('/login')
       }
       release()
     } else {
