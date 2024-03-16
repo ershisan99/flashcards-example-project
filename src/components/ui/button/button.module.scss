@@ -1,4 +1,4 @@
-@mixin button {
+.button {
   all: unset;
 
   cursor: pointer;
@@ -28,7 +28,8 @@
     var(--transition-duration-basic) color;
 
   &:focus-visible {
-    outline: 2px solid var(--color-info-700);
+    outline: var(--outline-focus);
+    outline-offset: 2px;
   }
 
   &:disabled {
@@ -43,8 +44,7 @@
 }
 
 .primary {
-  @include button;
-
+  composes: button;
   color: var(--color-light-100);
   background-color: var(--color-accent-500);
   box-shadow: 0 4px 18px rgb(140 97 255 / 35%);
@@ -59,8 +59,7 @@
 }
 
 .secondary {
-  @include button;
-
+  composes: button;
   color: var(--color-light-100);
   background-color: var(--color-dark-300);
   box-shadow: 0 2px 10px 0 #6d6d6d40;
@@ -75,8 +74,7 @@
 }
 
 .tertiary {
-  @include button;
-
+  composes: button;
   color: var(--color-accent-500);
   background-color: var(--color-dark-900);
   border: 1px solid var(--color-accent-700);
@@ -91,7 +89,7 @@
 }
 
 .link {
-  @include button;
+  composes: button;
 
   padding: 0.375rem 0;
 
@@ -99,4 +97,11 @@
   line-height: var(--line-height-m);
   color: var(--color-accent-500);
   text-decoration-line: underline;
+}
+
+.icon {
+  composes: button;
+
+  padding: 0;
+  border-radius: 9999px;
 }
