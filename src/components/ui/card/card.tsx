@@ -11,5 +11,5 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({ className, ...restP
     root: clsx(s.root, className),
   }
 
-  return <div ref={ref} className={classNames.root} {...restProps}></div>
+  return <div className={classNames.root} ref={ref} {...restProps}></div>
 })

@@ -6,22 +6,22 @@ import s from './typography.module.scss'
 
 export interface TextProps<T extends ElementType> {
   as?: T
+  children?: ReactNode
+  className?: string
   variant?:
-    | 'large'
+    | 'body1'
+    | 'body2'
+    | 'caption'
+    | 'error'
     | 'h1'
     | 'h2'
     | 'h3'
-    | 'body1'
-    | 'body2'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'caption'
-    | 'overline'
+    | 'large'
     | 'link1'
     | 'link2'
-    | 'error'
-  children?: ReactNode
-  className?: string
+    | 'overline'
+    | 'subtitle1'
+    | 'subtitle2'
 }
 
 export function Typography<T extends ElementType = 'p'>({
@@ -29,7 +29,7 @@ export function Typography<T extends ElementType = 'p'>({
   className,
   variant = 'body1',
   ...restProps
-}: TextProps<T> & Omit<ComponentPropsWithoutRef<T>, keyof TextProps<T>>) {
+}: Omit<ComponentPropsWithoutRef<T>, keyof TextProps<T>> & TextProps<T>) {
   const classNames = clsx(s.text, s[variant], className)
   const Component = as || 'p'
 

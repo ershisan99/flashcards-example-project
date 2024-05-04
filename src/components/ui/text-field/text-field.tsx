@@ -1,32 +1,31 @@
 import { ChangeEvent, ComponentProps, ComponentPropsWithoutRef, forwardRef, useState } from 'react'
 
+import { Eye, VisibilityOff } from '@/assets'
+import { Typography } from '@/components'
 import { clsx } from 'clsx'
 
 import s from './text-field.module.scss'
 
-import { VisibilityOff, Eye } from '@/assets'
-import { Typography } from '@/components'
-
 export type TextFieldProps = {
-  onValueChange?: (value: string) => void
   containerProps?: ComponentProps<'div'>
-  labelProps?: ComponentProps<'label'>
   errorMessage?: string
   label?: string
+  labelProps?: ComponentProps<'label'>
+  onValueChange?: (value: string) => void
 } & ComponentPropsWithoutRef<'input'>
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
       className,
-      errorMessage,
-      placeholder,
-      type,
       containerProps,
-      labelProps,
+      errorMessage,
       label,
+      labelProps,
       onChange,
       onValueChange,
+      placeholder,
+      type,
       ...restProps
     },
     ref
@@ -43,41 +42,41 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     }
 
     const classNames = {
-      root: clsx(s.root, containerProps?.className),
-      fieldContainer: clsx(s.fieldContainer),
-      field: clsx(s.field, !!errorMessage && s.error, className),
-      label: clsx(s.label, labelProps?.className),
       error: clsx(s.error),
+      field: clsx(s.field, !!errorMessage && s.error, className),
+      fieldContainer: clsx(s.fieldContainer),
+      label: clsx(s.label, labelProps?.className),
+      root: clsx(s.root, containerProps?.className),
     }
 
     return (
       <div className={classNames.root}>
         {label && (
-          <Typography variant="body2" as="label" className={classNames.label}>
+          <Typography as={'label'} className={classNames.label} variant={'body2'}>
             {label}
           </Typography>
         )}
         <div className={classNames.fieldContainer}>
           <input
             className={classNames.field}
+            onChange={handleChange}
             placeholder={placeholder}
             ref={ref}
             type={finalType}
-            onChange={handleChange}
             {...restProps}
           />
           {isShowPasswordButtonShown && (
             <button
               className={s.showPassword}
-              type={'button'}
               onClick={() => setShowPassword(prev => !prev)}
+              type={'button'}
             >
               {showPassword ? <VisibilityOff /> : <Eye />}
             </button>
           )}
         </div>
 
-        <Typography variant="error" className={classNames.error}>
+        <Typography className={classNames.error} variant={'error'}>
           {errorMessage}
         </Typography>
       </div>

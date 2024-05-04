@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { TextField } from './'
 
 const meta = {
-  title: 'Components/TextField',
   component: TextField,
   tags: ['autodocs'],
+  title: 'Components/TextField',
 } satisfies Meta<typeof TextField>
 
 export default meta
@@ -28,8 +28,8 @@ export const Password: Story = {
 
 export const Error: Story = {
   args: {
+    errorMessage: 'Error message',
     label: 'Input with error',
     value: 'Wrong value',
-    errorMessage: 'Error message',
   },
 }
