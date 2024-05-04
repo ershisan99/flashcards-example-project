@@ -1,0 +1,37 @@
+:root {
+  font-family: sans-serif;
+  color-scheme: dark light;
+}
+
+main {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 16px;
+
+  border-radius: 8px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 8px;
+
+  font: inherit;
+
+  background-color: dodgerblue;
+  border: none;
+  border-radius: 4px;
+}
