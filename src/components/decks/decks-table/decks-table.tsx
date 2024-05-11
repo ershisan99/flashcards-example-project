@@ -1,15 +1,16 @@
+import s from './decks-table.module.scss'
+
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
-import { Button, Typography } from '@/components'
 import {
+  Button,
+  Typography,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeadCell,
   TableRow,
-} from '@/components/ui/table'
-
-import s from './decks-table.module.scss'
+} from '@/components'
 
 type Deck = {
   cards: number
