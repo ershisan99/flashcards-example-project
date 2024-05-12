@@ -134,7 +134,7 @@ export const DecksPage = () => {
           <TextField
             onValueChange={handleSearch}
             placeholder={'Search'}
-            search
+            type={'search'}
             value={search ?? ''}
           />
           <Tabs asChild onValueChange={handleTabChange} value={currentTab ?? undefined}>

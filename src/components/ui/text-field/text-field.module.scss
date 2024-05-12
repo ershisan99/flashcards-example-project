@@ -89,9 +89,17 @@
 
   background: transparent;
   border: 0;
+  border-radius: 0.25rem;
   outline: 0;
 
   &:focus-visible {
     outline: var(--outline-focus);
   }
+}
+
+.clearInput {
+  composes: showPassword;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
