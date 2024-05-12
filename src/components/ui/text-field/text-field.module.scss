@@ -45,6 +45,10 @@
   &.hasLeadingIcon {
     padding-left: 41px;
   }
+
+  &[type='search']::-webkit-search-cancel-button {
+    display: none;
+  }
 }
 
 .label {
