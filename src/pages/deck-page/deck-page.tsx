@@ -19,7 +19,7 @@ export const DeckPage = () => {
       <Button as={Link} to={learnLink}>
         Learn
       </Button>
-      <TextField placeholder={'Search cards'} search />
+      <TextField placeholder={'Search cards'} type={'search'} />
       <CardsTable cards={cardsData?.items} />
       <Pagination
         count={cardsData?.pagination?.totalPages || 1}
