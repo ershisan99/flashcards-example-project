@@ -1,16 +1,18 @@
 module.exports = {
   extends: ['@it-incubator/eslint-config', 'plugin:storybook/recommended'],
-  plugins: ['myPlugin'],
-  rules: {
-    'myPlugin/no-wrong-redux-import': 'error',
-  },
   overrides: [
     {
       files: ['**/*.stories.tsx'],
       rules: {
-        'react-hooks/rules-of-hooks': 'off',
         'no-console': 'off',
+        'react-hooks/rules-of-hooks': 'off',
       },
     },
   ],
+  plugins: [
+    'eslint-plugin-react-compiler',
+  ],
+  rules: {
+    'react-compiler/react-compiler': "error",
+  },
 }
