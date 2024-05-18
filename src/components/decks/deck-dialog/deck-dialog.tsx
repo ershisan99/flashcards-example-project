@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ControlledCheckbox, ControlledTextField, Dialog, DialogProps } from '@/components'
+import { Button, ControlledCheckbox, ControlledTextField, Dialog, DialogProps } from '@/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
@@ -14,8 +15,8 @@ const newDeckSchema = z.object({
 type FormValues = z.infer<typeof newDeckSchema>
 
 type Props = Pick<DialogProps, 'onCancel' | 'onOpenChange' | 'open'> & {
-  defaultValues?: FormValues
-  onConfirm: (data: FormValues) => void
+  defaultValues?: FormValues & { cover?: null | string }
+  onConfirm: (data: FormValues & { cover?: File | null }) => void
 }
 export const DeckDialog = ({
   defaultValues = { isPrivate: false, name: '' },
@@ -23,12 +24,34 @@ export const DeckDialog = ({
   onConfirm,
   ...dialogProps
 }: Props) => {
+  const [cover, setCover] = useState<File | null>(null)
+  const [preview, setPreview] = useState<null | string>('')
+
+  useEffect(() => {
+    if (defaultValues?.cover) {
+      setPreview(defaultValues?.cover)
+    }
+  }, [defaultValues?.cover])
+
+  useEffect(() => {
+    if (cover) {
+      const newPreview = URL.createObjectURL(cover)
+
+      if (preview) {
+        URL.revokeObjectURL(preview)
+      }
+      setPreview(newPreview)
+
+      return () => URL.revokeObjectURL(newPreview)
+    }
+  }, [cover])
+
   const { control, handleSubmit, reset } = useForm<FormValues>({
     defaultValues,
     resolver: zodResolver(newDeckSchema),
   })
   const onSubmit = handleSubmit(data => {
-    onConfirm(data)
+    onConfirm({ ...data, cover })
     dialogProps.onOpenChange?.(false)
     reset()
   })
@@ -40,6 +63,23 @@ export const DeckDialog = ({
   return (
     <Dialog {...dialogProps} onCancel={handleCancel} onConfirm={onSubmit} title={'Create new deck'}>
       <form className={s.content} onSubmit={onSubmit}>
+        {preview && <img alt={'Deck cover'} src={preview.toString()} />}
+        <input
+          accept={'image/*'}
+          onChange={e => setCover(e.target.files?.[0] ?? null)}
+          type={'file'}
+        />
+        {cover && (
+          <Button
+            onClick={() => {
+              setCover(null)
+              setPreview(null)
+            }}
+            type={'button'}
+          >
+            Remove cover
+          </Button>
+        )}
         <ControlledTextField control={control} label={'Deck name'} name={'name'} />
         <ControlledCheckbox
           control={control}

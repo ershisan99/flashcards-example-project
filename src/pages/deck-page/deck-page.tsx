@@ -6,10 +6,11 @@ import { Pagination } from '@/components/ui/pagination'
 import { useGetDeckByIdQuery, useGetDeckCardsQuery } from '@/services'
 
 export const DeckPage = () => {
-  const { deckId } = useParams()
+  const params = useParams()
+  const deckId = params.deckId ?? ''
   const [currentPage, setCurrentPage] = useState(1)
-  const { data: deckData } = useGetDeckByIdQuery({ id: deckId || '' })
-  const { data: cardsData } = useGetDeckCardsQuery({ id: deckId || '' })
+  const { data: deckData } = useGetDeckByIdQuery({ id: deckId })
+  const { data: cardsData } = useGetDeckCardsQuery({ id: deckId })
 
   const learnLink = `/decks/${deckId}/learn`
 

@@ -8,6 +8,7 @@ import {
 
 import { Layout, useAuthContext } from '@/components/layout'
 import { DeckPage } from '@/pages/deck-page/deck-page'
+import { LearnPage } from '@/pages/learn-page/learn.page'
 
 import { DecksPage, SignInPage } from './pages'
 
@@ -32,9 +33,13 @@ const privateRoutes: RouteObject[] = [
     element: <DeckPage />,
     path: '/decks/:deckId',
   },
+  {
+    element: <LearnPage />,
+    path: '/decks/:deckId/learn',
+  },
 ]
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     children: [
       {

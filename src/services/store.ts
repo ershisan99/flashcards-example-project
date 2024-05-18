@@ -4,13 +4,13 @@ import { decksSlice } from '@/services/decks/decks.slice'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
 
-import { baseApi } from './base-api'
+import { flashcardsApi } from './flashcards-api'
 
 export const store = configureStore({
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(flashcardsApi.middleware),
   reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
     [decksSlice.name]: decksSlice.reducer,
+    [flashcardsApi.reducerPath]: flashcardsApi.reducer,
   },
 })
 

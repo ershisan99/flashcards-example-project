@@ -11,6 +11,7 @@ import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
+  useGetMinMaxCardsQuery,
   useUpdateDeckMutation,
 } from '@/services/decks'
 
@@ -43,20 +44,26 @@ export const DecksPage = () => {
 
   const currentUserId = me?.id
   const authorId = currentTab === 'my' ? currentUserId : undefined
-  const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery({
-    authorId,
-    currentPage,
-    maxCardsCount,
-    minCardsCount,
-    name: search,
-    orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
-  })
+  const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
+  const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery(
+    {
+      authorId,
+      currentPage,
+      maxCardsCount,
+      minCardsCount,
+      name: search,
+      orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
+    },
+    {
+      skip: !minMaxCardsData,
+    }
+  )
   const resetFilters = () => {
     setCurrentPage(null)
     setSearch(null)
     setMinCards(null)
     setMaxCards(null)
-    setRangeValue([0, decks?.maxCardsCount ?? null])
+    setRangeValue([minMaxCardsData?.min ?? 0, minMaxCardsData?.max ?? null])
     setSort(null)
   }
   const decks = decksCurrentData ?? decksData
@@ -144,8 +151,8 @@ export const DecksPage = () => {
             </TabsList>
           </Tabs>
           <Slider
-            max={decks?.maxCardsCount || 0}
-            min={0}
+            max={minMaxCardsData?.max || 0}
+            min={minMaxCardsData?.min || 0}
             onValueChange={setRangeValue}
             onValueCommit={handleSliderCommitted}
             value={rangeValue}

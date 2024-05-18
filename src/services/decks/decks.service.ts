@@ -1,41 +1,60 @@
 import {
   CardsResponse,
   CreateDeckArgs,
+  DeckMinMaxCardsResponse,
   DeckResponse,
   DecksResponse,
   GetDecksArgs,
   UpdateDeckArgs,
-  baseApi,
+  flashcardsApi,
 } from '@/services'
-import { RootState } from '@/services/store'
 import { getValuable } from '@/utils'
 
-const decksService = baseApi.injectEndpoints({
+const decksService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
       invalidatesTags: ['Decks'],
       async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
-        const res = await queryFulfilled
+        const invalidateBy = decksService.util.selectInvalidatedBy(getState(), [{ type: 'Decks' }])
 
-        for (const { endpointName, originalArgs } of decksService.util.selectInvalidatedBy(
-          getState(),
-          [{ type: 'Decks' }]
-        )) {
-          if (endpointName !== 'getDecks') {
-            continue
-          }
-          dispatch(
-            decksService.util.updateQueryData(endpointName, originalArgs, draft => {
-              draft.items.unshift(res.data)
-            })
-          )
+        try {
+          const { data } = await queryFulfilled
+
+          invalidateBy.forEach(({ originalArgs }) => {
+            dispatch(
+              decksService.util.updateQueryData('getDecks', originalArgs, draft => {
+                if (originalArgs.currentPage !== 1) {
+                  return
+                }
+                draft.items.unshift(data)
+                draft.items.pop()
+              })
+            )
+          })
+        } catch (e) {
+          console.log(e)
         }
       },
-      query: body => ({
-        body,
-        method: 'POST',
-        url: `v1/decks`,
-      }),
+      query: ({ cover, isPrivate, name }) => {
+        const formData = new FormData()
+
+        formData.append('name', name)
+
+        if (isPrivate) {
+          formData.append('isPrivate', isPrivate + '')
+        }
+        if (cover) {
+          formData.append('cover', cover)
+        } else if (cover === null) {
+          formData.append('cover', '')
+        }
+
+        return {
+          body: formData,
+          method: 'POST',
+          url: `v1/decks`,
+        }
+      },
     }),
     deleteDeck: builder.mutation<void, { id: string }>({
       invalidatesTags: ['Decks'],
@@ -45,6 +64,7 @@ const decksService = baseApi.injectEndpoints({
       }),
     }),
     getDeckById: builder.query<DeckResponse, { id: string }>({
+      providesTags: ['Decks'],
       query: ({ id }) => `v1/decks/${id}`,
     }),
     getDeckCards: builder.query<CardsResponse, { id: string }>({
@@ -55,53 +75,64 @@ const decksService = baseApi.injectEndpoints({
       query: args => {
         return {
           params: args ? getValuable(args) : undefined,
-          url: `v1/decks`,
+          url: 'v2/decks',
         }
       },
     }),
+    getMinMaxCards: builder.query<DeckMinMaxCardsResponse, void>({
+      query: () => `v2/decks/min-max-cards`,
+    }),
     updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
       invalidatesTags: ['Decks'],
-      async onQueryStarted({ id, ...patch }, { dispatch, getState, queryFulfilled }) {
-        const state = getState() as RootState
+      async onQueryStarted({ cover, id, ...args }, { dispatch, getState, queryFulfilled }) {
+        const invalidateBy = decksService.util.selectInvalidatedBy(getState(), [{ type: 'Decks' }])
+        const patchResults: any[] = []
 
-        const minCardsCount = state.decks.minCards
-        const search = state.decks.search
-        const currentPage = state.decks.currentPage
-        const maxCardsCount = state.decks.maxCards
-        const authorId = state.decks.authorId
+        invalidateBy.forEach(({ originalArgs }) => {
+          patchResults.push(
+            dispatch(
+              decksService.util.updateQueryData('getDecks', originalArgs, draft => {
+                const itemToUpdateIndex = draft.items.findIndex(deck => deck.id === id)
 
-        const patchResult = dispatch(
-          decksService.util.updateQueryData(
-            'getDecks',
-            {
-              authorId,
-              currentPage,
-              maxCardsCount,
-              minCardsCount,
-              name: search,
-            },
-            draft => {
-              const deck = draft.items.find(deck => deck.id === id)
+                if (itemToUpdateIndex === -1) {
+                  return
+                }
 
-              if (!deck) {
-                return
-              }
-              Object.assign(deck, patch)
-            }
+                Object.assign(draft.items[itemToUpdateIndex], args)
+              })
+            )
           )
-        )
+        })
 
         try {
           await queryFulfilled
-        } catch {
-          patchResult.undo()
+        } catch (e) {
+          patchResults.forEach(patchResult => {
+            patchResult.undo()
+          })
         }
       },
-      query: ({ id, ...body }) => ({
-        body,
-        method: 'PATCH',
-        url: `v1/decks/${id}`,
-      }),
+      query: ({ cover, id, isPrivate, name }) => {
+        const formData = new FormData()
+
+        if (name) {
+          formData.append('name', name)
+        }
+        if (isPrivate) {
+          formData.append('isPrivate', isPrivate.toString())
+        }
+        if (cover) {
+          formData.append('cover', cover)
+        } else if (cover === null) {
+          formData.append('cover', '')
+        }
+
+        return {
+          body: formData,
+          method: 'PATCH',
+          url: `v1/decks/${id}`,
+        }
+      },
     }),
   }),
 })
@@ -112,5 +143,7 @@ export const {
   useGetDeckByIdQuery,
   useGetDeckCardsQuery,
   useGetDecksQuery,
+  useGetMinMaxCardsQuery,
+  useLazyGetDecksQuery,
   useUpdateDeckMutation,
 } = decksService

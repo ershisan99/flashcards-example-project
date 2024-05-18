@@ -28,8 +28,12 @@ export type Deck = {
 
 export type DecksResponse = {
   items: Deck[]
-  maxCardsCount: number
   pagination: Pagination
+}
+
+export type DeckMinMaxCardsResponse = {
+  max: number
+  min: number
 }
 
 export type DeckResponse = Deck
@@ -64,7 +68,7 @@ export type GetDecksArgs = {
 }
 
 export type CreateDeckArgs = {
-  cover?: string
+  cover?: File | null
   isPrivate?: boolean
   name: string
 }

@@ -1,2 +1,2 @@
-export * from './base-api'
+export * from './flashcards-api'
 export * from './decks'

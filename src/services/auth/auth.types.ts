@@ -3,6 +3,12 @@ export type LoginArgs = {
   password: string
   rememberMe?: boolean
 }
+
+export type LoginResponse = {
+  accessToken: string
+  refreshToken: string
+}
+
 export type User = {
   avatar: null | string
   created: string
