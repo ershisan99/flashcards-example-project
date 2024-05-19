@@ -13,6 +13,7 @@ import {
   useGetDecksQuery,
   useUpdateDeckMutation,
 } from '@/services/decks'
+import { useDebounceCallback } from 'usehooks-ts'
 
 import s from './decks-page.module.scss'
 
@@ -21,7 +22,6 @@ export const DecksPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [deckToDeleteId, setDeckToDeleteId] = useState<null | string>(null)
   const [deckToEditId, setDeckToEditId] = useState<null | string>(null)
-
   const showEditModal = !!deckToEditId
 
   const {
@@ -40,6 +40,7 @@ export const DecksPage = () => {
     setSort,
     sort,
   } = useDeckSearchParams()
+  const [searchInputValue, setSearchInputValue] = useState<null | string>(search)
 
   const currentUserId = me?.id
   const authorId = currentTab === 'my' ? currentUserId : undefined
@@ -54,6 +55,7 @@ export const DecksPage = () => {
   const resetFilters = () => {
     setCurrentPage(null)
     setSearch(null)
+    setSearchInputValue(null)
     setMinCards(null)
     setMaxCards(null)
     setRangeValue([0, decks?.maxCardsCount ?? null])
@@ -72,9 +74,10 @@ export const DecksPage = () => {
 
   const openCreateModal = () => setShowCreateModal(true)
 
+  const updateSearch = useDebounceCallback(setSearch, 500)
   const handleSearch = (search: null | string) => {
     setCurrentPage(null)
-    setSearch(search)
+    setSearchInputValue(search)
   }
   const handleSliderCommitted = (value: number[]) => {
     setCurrentPage(null)
@@ -132,10 +135,13 @@ export const DecksPage = () => {
         </div>
         <div className={s.filters}>
           <TextField
-            onValueChange={handleSearch}
+            onValueChange={value => {
+              updateSearch(value)
+              handleSearch(value)
+            }}
             placeholder={'Search'}
             search
-            value={search ?? ''}
+            value={searchInputValue ?? ''}
           />
           <Tabs asChild onValueChange={handleTabChange} value={currentTab ?? undefined}>
             <TabsList>

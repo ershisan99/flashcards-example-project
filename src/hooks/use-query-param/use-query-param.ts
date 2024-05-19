@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { isNil } from 'remeda'
 
 export function useQueryParam<T extends boolean | number | string>(
@@ -9,14 +11,17 @@ export function useQueryParam<T extends boolean | number | string>(
   const paramValue = searchParams.get(param)
   const convertedValue = getConvertedValue<T>(paramValue, defaultValue)
 
-  const setParamValue = (value: T | null): void => {
-    if (isNil(value) || value === '') {
-      searchParams.delete(param)
-    } else {
-      searchParams.set(param, String(value))
-    }
-    setSearchParams(searchParams)
-  }
+  const setParamValue = useCallback(
+    (value: T | null): void => {
+      if (isNil(value) || value === '') {
+        searchParams.delete(param)
+      } else {
+        searchParams.set(param, String(value))
+      }
+      setSearchParams(searchParams)
+    },
+    [searchParams, setSearchParams]
+  )
 
   return [convertedValue, setParamValue]
 }
