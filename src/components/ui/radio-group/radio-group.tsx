@@ -32,13 +32,10 @@ type Option = {
   label: string
   value: string
 }
-export type RadioGroupProps = Omit<
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>,
-  'children'
-> & {
+export type RadioGroupProps = {
   errorMessage?: string
   options: Option[]
-}
+} & Omit<React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>, 'children'>
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   RadioGroupProps

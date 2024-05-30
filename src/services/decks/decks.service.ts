@@ -59,6 +59,13 @@ const decksService = baseApi.injectEndpoints({
         }
       },
     }),
+    toggleFavorite: builder.mutation<void, { deckId: string; favorite: boolean }>({
+      invalidatesTags: ['Decks'],
+      query: ({ deckId, favorite }) => ({
+        method: favorite ? 'POST' : 'DELETE',
+        url: `v1/decks/${deckId}/favorite`,
+      }),
+    }),
     updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
       invalidatesTags: ['Decks'],
       async onQueryStarted({ id, ...patch }, { dispatch, getState, queryFulfilled }) {
@@ -112,5 +119,6 @@ export const {
   useGetDeckByIdQuery,
   useGetDeckCardsQuery,
   useGetDecksQuery,
+  useToggleFavoriteMutation,
   useUpdateDeckMutation,
 } = decksService

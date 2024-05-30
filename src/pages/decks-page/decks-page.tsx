@@ -11,6 +11,7 @@ import {
   useCreateDeckMutation,
   useDeleteDeckMutation,
   useGetDecksQuery,
+  useToggleFavoriteMutation,
   useUpdateDeckMutation,
 } from '@/services/decks'
 
@@ -42,10 +43,12 @@ export const DecksPage = () => {
   } = useDeckSearchParams()
 
   const currentUserId = me?.id
-  const authorId = currentTab === 'my' ? currentUserId : undefined
+  const authorId = currentTab === 'my' ? '~caller' : undefined
+  const favoritedBy = currentTab === 'favorites' ? '~caller' : undefined
   const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery({
     authorId,
     currentPage,
+    favoritedBy,
     maxCardsCount,
     minCardsCount,
     name: search,
@@ -69,7 +72,7 @@ export const DecksPage = () => {
   const [createDeck] = useCreateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
-
+  const [toggleFavorite] = useToggleFavoriteMutation()
   const openCreateModal = () => setShowCreateModal(true)
 
   const handleSearch = (search: null | string) => {
@@ -141,6 +144,7 @@ export const DecksPage = () => {
             <TabsList>
               <TabsTrigger value={'my'}>My decks</TabsTrigger>
               <TabsTrigger value={'all'}>All decks</TabsTrigger>
+              <TabsTrigger value={'favorites'}>Favorites</TabsTrigger>
             </TabsList>
           </Tabs>
           <Slider
@@ -159,6 +163,7 @@ export const DecksPage = () => {
           decks={decks?.items}
           onDeleteClick={setDeckToDeleteId}
           onEditClick={setDeckToEditId}
+          onFavoriteToggle={(deckId, favorite) => toggleFavorite({ deckId, favorite })}
           onSort={setSort}
           sort={sort}
         />

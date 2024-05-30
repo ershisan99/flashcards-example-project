@@ -14,16 +14,20 @@ html {
 
 button {
   all: unset;
+
   cursor: pointer;
+  user-select: none;
+
   display: inline-flex;
   align-items: center;
+
+  box-sizing: border-box;
+
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
   font-style: inherit;
   color: inherit;
-  user-select: none;
-  box-sizing: border-box;
 
   &:focus-visible {
     outline: var(--outline-focus);

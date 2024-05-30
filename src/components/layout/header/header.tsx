@@ -9,12 +9,12 @@ import s from './header.module.scss'
 import { Button } from '../../ui'
 
 export type HeaderProps =
-  | (Partial<UserDropdownProps> & {
+  | ({
       isLoggedIn: false
-    })
-  | (UserDropdownProps & {
+    } & Partial<UserDropdownProps>)
+  | ({
       isLoggedIn: true
-    })
+    } & UserDropdownProps)
 
 export const Header = memo(({ avatar, email, isLoggedIn, onLogout, userName }: HeaderProps) => {
   return (

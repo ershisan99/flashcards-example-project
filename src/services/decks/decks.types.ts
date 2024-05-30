@@ -18,6 +18,7 @@ export type Deck = {
   id: string
   isBlocked?: boolean | null
   isDeleted: boolean | null
+  isFavorite: boolean
   isPrivate: boolean
   name: string
   rating: number
@@ -56,6 +57,7 @@ export type Card = {
 export type GetDecksArgs = {
   authorId?: null | string
   currentPage?: null | number
+  favoritedBy?: null | string
   itemsPerPage?: null | number
   maxCardsCount?: null | number
   minCardsCount?: null | number
@@ -69,6 +71,6 @@ export type CreateDeckArgs = {
   name: string
 }
 
-export type UpdateDeckArgs = Partial<CreateDeckArgs> & { id: Deck['id'] }
+export type UpdateDeckArgs = { id: Deck['id'] } & Partial<CreateDeckArgs>
 
 export type Tab = 'all' | 'my'

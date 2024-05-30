@@ -2,12 +2,12 @@ import { Button, Modal, ModalProps } from '@/components'
 
 import s from './dialog.module.scss'
 
-export type DialogProps = ModalProps & {
+export type DialogProps = {
   cancelText?: string
   confirmText?: string
   onCancel?: () => void
   onConfirm?: () => void
-}
+} & ModalProps
 export const Dialog = ({
   cancelText = 'Cancel',
   children,

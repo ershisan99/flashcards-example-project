@@ -13,7 +13,8 @@
     "lint:file": "eslint --fix",
     "storybook": "storybook dev -p 6006",
     "sb": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "generate": "npx @svgr/cli --out-dir src/assets/icons/components --jsx-runtime automatic --typescript --ref --memo --icon --replace-attr-values \"#000\"=\"currentcolor\" -- src/assets/icons/svgs && npm run format && npm run lint"
   },
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",

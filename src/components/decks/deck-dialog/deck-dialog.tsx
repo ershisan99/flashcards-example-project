@@ -13,10 +13,10 @@ const newDeckSchema = z.object({
 
 type FormValues = z.infer<typeof newDeckSchema>
 
-type Props = Pick<DialogProps, 'onCancel' | 'onOpenChange' | 'open'> & {
+type Props = {
   defaultValues?: FormValues
   onConfirm: (data: FormValues) => void
-}
+} & Pick<DialogProps, 'onCancel' | 'onOpenChange' | 'open'>
 export const DeckDialog = ({
   defaultValues = { isPrivate: false, name: '' },
   onCancel,

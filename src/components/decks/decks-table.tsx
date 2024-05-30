@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
+import { Edit2Outline, PlayCircleOutline, Star, StarOutline, TrashOutline } from '@/assets'
 import {
   Button,
   Column,
@@ -39,12 +39,15 @@ const columns: Column[] = [
     title: '',
   },
 ]
+const placeholderImage =
+  'https://production-it-incubator.s3.eu-central-1.amazonaws.com/file-manager/Image/fb0c2ac3-807c-4805-910a-8cd2abe204e5_image-1717091563266.png'
 
 type Props = {
   currentUserId: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onFavoriteToggle: (id: string, isFavorite: boolean) => void
   onSort: (key: Sort) => void
   sort: Sort
 }
@@ -54,11 +57,14 @@ export const DecksTable = ({
   decks,
   onDeleteClick,
   onEditClick,
+  onFavoriteToggle,
   onSort,
   sort,
 }: Props) => {
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
+  const handleFavoriteToggle = (id: string, isFavorite: boolean) => () =>
+    onFavoriteToggle(id, isFavorite)
 
   return (
     <Table>
@@ -67,15 +73,29 @@ export const DecksTable = ({
         {decks?.map(deck => (
           <TableRow key={deck.id}>
             <TableCell>
-              <Typography as={Link} to={`/decks/${deck.id}`} variant={'body2'}>
-                {deck.name}
-              </Typography>
+              <div className={s.nameContainer}>
+                <img alt={deck.name} src={deck.cover ?? placeholderImage} />
+                <Typography as={Link} to={`/decks/${deck.id}`} variant={'body2'}>
+                  {deck.name}
+                </Typography>
+              </div>
             </TableCell>
             <TableCell>{deck.cardsCount}</TableCell>
             <TableCell>{formatDate(deck.updated)}</TableCell>
             <TableCell>{deck.author.name}</TableCell>
             <TableCell>
               <div className={s.iconsContainer}>
+                <Button
+                  className={s.favoriteToggle}
+                  onClick={handleFavoriteToggle(deck.id, !deck.isFavorite)}
+                  variant={'icon'}
+                >
+                  {deck.isFavorite ? (
+                    <Star height={16} width={16} />
+                  ) : (
+                    <StarOutline height={16} width={16} />
+                  )}
+                </Button>
                 <Button as={Link} to={`/decks/${deck.id}/learn`} variant={'icon'}>
                   <PlayCircleOutline />
                 </Button>

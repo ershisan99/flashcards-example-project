@@ -39,8 +39,8 @@ const ButtonPolymorph = <T extends ElementType = 'button'>(props: ButtonProps<T>
 }
 
 export const Button = forwardRef(ButtonPolymorph) as <T extends ElementType = 'button'>(
-  props: ButtonProps<T> &
-    Omit<ComponentPropsWithoutRef<T>, keyof ButtonProps<T>> & {
-      ref?: ForwardedRef<ElementRef<T>>
-    }
+  props: {
+    ref?: ForwardedRef<ElementRef<T>>
+  } & ButtonProps<T> &
+    Omit<ComponentPropsWithoutRef<T>, keyof ButtonProps<T>>
 ) => ReturnType<typeof ButtonPolymorph>
