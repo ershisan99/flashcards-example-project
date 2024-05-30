@@ -3,3 +3,25 @@
   gap: 10px;
   align-items: center;
 }
+
+.nameContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 7.5rem;
+    height: 3rem;
+    object-fit: cover;
+  }
+}
+
+.favoriteToggleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favoriteToggle {
+  height: 100%;
+}

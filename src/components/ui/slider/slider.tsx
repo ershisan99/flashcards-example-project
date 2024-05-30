@@ -6,9 +6,9 @@ import { clsx } from 'clsx'
 import s from './slider.module.scss'
 const Slider = forwardRef<
   ElementRef<typeof SliderPrimitive.Root>,
-  Omit<ComponentPropsWithoutRef<typeof SliderPrimitive.Root>, 'value'> & {
+  {
     value: (null | number)[]
-  }
+  } & Omit<ComponentPropsWithoutRef<typeof SliderPrimitive.Root>, 'value'>
 >(({ className, max, onValueChange, value, ...props }, ref) => {
   useEffect(() => {
     if (value?.[1] === undefined || value?.[1] === null) {

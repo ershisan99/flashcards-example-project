@@ -25,7 +25,7 @@ export const Modal = ({ children, title, ...props }: ModalProps) => {
               </Typography>
             </DialogPrimitive.Title>
             <DialogPrimitive.Close className={s.closeButton}>
-              <Close />
+              <Close height={24} width={24} />
             </DialogPrimitive.Close>
           </div>
           {children}

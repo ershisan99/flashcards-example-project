@@ -27,8 +27,8 @@ export type PaginationProps = {
   perPage?: number
   perPageOptions?: number[]
   siblings?: number
-} & PaginationConditionals &
-  Omit<ComponentPropsWithoutRef<'div'>, 'onChange'>
+} & Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> &
+  PaginationConditionals
 const classNames = {
   container: s.container,
   dots: s.dots,
@@ -103,10 +103,10 @@ type NavigationButtonProps = {
   onClick: () => void
 }
 
-type PageButtonProps = NavigationButtonProps & {
+type PageButtonProps = {
   page: number
   selected: boolean
-}
+} & NavigationButtonProps
 
 const Dots: FC = () => {
   return <span className={classNames.dots}>&#8230;</span>

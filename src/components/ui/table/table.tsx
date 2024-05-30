@@ -55,7 +55,7 @@ export const TableCell = forwardRef<ElementRef<'td'>, ComponentPropsWithoutRef<'
   }
 )
 
-export const TableEmpty: FC<ComponentProps<'div'> & { mb?: string; mt?: string }> = ({
+export const TableEmpty: FC<{ mb?: string; mt?: string } & ComponentProps<'div'>> = ({
   className,
   mb,
   mt = '89px',
@@ -86,11 +86,11 @@ export type Sort = {
 
 export const TableHeader: FC<
   Omit<
-    ComponentPropsWithoutRef<'thead'> & {
+    {
       columns: Column[]
       onSort?: (sort: Sort) => void
       sort?: Sort
-    },
+    } & ComponentPropsWithoutRef<'thead'>,
     'children'
   >
 > = ({ columns, onSort, sort, ...restProps }) => {
