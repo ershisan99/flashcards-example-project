@@ -1,4 +1,12 @@
-import { ChangeEvent, ComponentProps, ComponentPropsWithoutRef, forwardRef, useState } from 'react'
+import {
+  ChangeEvent,
+  ComponentProps,
+  ComponentPropsWithoutRef,
+  forwardRef,
+  memo,
+  useCallback,
+  useState,
+} from 'react'
 
 import { Eye, VisibilityOff } from '@/assets'
 import { Typography } from '@/components'
@@ -14,7 +22,7 @@ export type TextFieldProps = {
   onValueChange?: (value: string) => void
 } & ComponentPropsWithoutRef<'input'>
 
-export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
+const RawTextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
       className,
@@ -30,24 +38,31 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     },
     ref
   ) => {
-    const [showPassword, setShowPassword] = useState(false)
+    const [revealPassword, setRevealPassword] = useState(false)
 
-    const isShowPasswordButtonShown = type === 'password'
+    const isRevealPasswordButtonShown = type === 'password'
 
-    const finalType = getFinalType(type, showPassword)
-
-    function handleChange(e: ChangeEvent<HTMLInputElement>) {
-      onChange?.(e)
-      onValueChange?.(e.target.value)
-    }
+    const finalType = getFinalType(type, revealPassword)
 
     const classNames = {
       error: clsx(s.error),
-      field: clsx(s.field, !!errorMessage && s.error, className),
+      field: clsx(s.field, errorMessage && s.error, className),
       fieldContainer: clsx(s.fieldContainer),
       label: clsx(s.label, labelProps?.className),
       root: clsx(s.root, containerProps?.className),
     }
+
+    const handleChange = useCallback(
+      (e: ChangeEvent<HTMLInputElement>) => {
+        onChange?.(e)
+        onValueChange?.(e.target.value)
+      },
+      [onChange, onValueChange]
+    )
+
+    const handleShowPasswordClick = useCallback(() => {
+      setRevealPassword(prev => !prev)
+    }, [])
 
     return (
       <div className={classNames.root}>
@@ -56,6 +71,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             {label}
           </Typography>
         )}
+
         <div className={classNames.fieldContainer}>
           <input
             className={classNames.field}
@@ -65,20 +81,18 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             type={finalType}
             {...restProps}
           />
-          {isShowPasswordButtonShown && (
-            <button
-              className={s.showPassword}
-              onClick={() => setShowPassword(prev => !prev)}
-              type={'button'}
-            >
-              {showPassword ? <VisibilityOff /> : <Eye />}
+          {isRevealPasswordButtonShown && (
+            <button className={s.showPassword} onClick={handleShowPasswordClick} type={'button'}>
+              {revealPassword ? <VisibilityOff /> : <Eye />}
             </button>
           )}
         </div>
 
-        <Typography className={classNames.error} variant={'error'}>
-          {errorMessage}
-        </Typography>
+        {errorMessage && (
+          <Typography className={classNames.error} variant={'error'}>
+            {errorMessage}
+          </Typography>
+        )}
       </div>
     )
   }
@@ -91,3 +105,7 @@ function getFinalType(type: ComponentProps<'input'>['type'], showPassword: boole
 
   return type
 }
+
+export const TextField = memo(RawTextField)
+
+TextField.displayName = 'TextField'

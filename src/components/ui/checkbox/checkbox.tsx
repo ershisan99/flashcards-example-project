@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, FC } from 'react'
+import { ComponentPropsWithoutRef } from 'react'
 
 import { Check } from '@/assets/icons'
 import { Typography } from '@/components'
@@ -13,13 +13,13 @@ export type CheckboxProps = {
   position?: 'default' | 'left'
 } & ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
 
-export const Checkbox: FC<CheckboxProps> = ({
+export const Checkbox = ({
   className,
   disabled,
   label,
   position = 'default',
   ...rest
-}) => {
+}: CheckboxProps) => {
   const classNames = {
     buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled, position === 'left' && s.left),
     container: clsx(s.container, className),
