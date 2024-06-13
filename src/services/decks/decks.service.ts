@@ -5,32 +5,15 @@ import {
   DecksResponse,
   GetDecksArgs,
   UpdateDeckArgs,
-  baseApi,
 } from '@/services'
-import { RootState } from '@/services/store'
 import { getValuable } from '@/utils'
 
-const decksService = baseApi.injectEndpoints({
+import { flashcardsApi } from '../flashcardsApi'
+
+const decksService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
       invalidatesTags: ['Decks'],
-      async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
-        const res = await queryFulfilled
-
-        for (const { endpointName, originalArgs } of decksService.util.selectInvalidatedBy(
-          getState(),
-          [{ type: 'Decks' }]
-        )) {
-          if (endpointName !== 'getDecks') {
-            continue
-          }
-          dispatch(
-            decksService.util.updateQueryData(endpointName, originalArgs, draft => {
-              draft.items.unshift(res.data)
-            })
-          )
-        }
-      },
       query: body => ({
         body,
         method: 'POST',
@@ -61,42 +44,6 @@ const decksService = baseApi.injectEndpoints({
     }),
     updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
       invalidatesTags: ['Decks'],
-      async onQueryStarted({ id, ...patch }, { dispatch, getState, queryFulfilled }) {
-        const state = getState() as RootState
-
-        const minCardsCount = state.decks.minCards
-        const search = state.decks.search
-        const currentPage = state.decks.currentPage
-        const maxCardsCount = state.decks.maxCards
-        const authorId = state.decks.authorId
-
-        const patchResult = dispatch(
-          decksService.util.updateQueryData(
-            'getDecks',
-            {
-              authorId,
-              currentPage,
-              maxCardsCount,
-              minCardsCount,
-              name: search,
-            },
-            draft => {
-              const deck = draft.items.find(deck => deck.id === id)
-
-              if (!deck) {
-                return
-              }
-              Object.assign(deck, patch)
-            }
-          )
-        )
-
-        try {
-          await queryFulfilled
-        } catch {
-          patchResult.undo()
-        }
-      },
       query: ({ id, ...body }) => ({
         body,
         method: 'PATCH',

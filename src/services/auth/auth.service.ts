@@ -1,7 +1,7 @@
-import { baseApi } from '..'
+import { flashcardsApi } from '..'
 import { LoginArgs, User } from './auth.types'
 
-export const authService = baseApi.injectEndpoints({
+export const authService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation<void, LoginArgs>({
       invalidatesTags: ['Me'],

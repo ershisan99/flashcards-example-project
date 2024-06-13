@@ -1,2 +1,2 @@
-export * from './base-api'
 export * from './decks'
+export { flashcardsApi } from './flashcardsApi'
