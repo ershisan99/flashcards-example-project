@@ -24,8 +24,8 @@ type Props = {
 export const SignIn = (props: Props) => {
   const { control, handleSubmit } = useForm<FormType>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'test@test.com',
+      password: 'test',
       rememberMe: false,
     },
     mode: 'onSubmit',
