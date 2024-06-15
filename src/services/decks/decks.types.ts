@@ -64,11 +64,11 @@ export type GetDecksArgs = {
 }
 
 export type CreateDeckArgs = {
-  cover?: string
+  cover?: File | null
   isPrivate?: boolean
   name: string
 }
 
-export type UpdateDeckArgs = Partial<CreateDeckArgs> & { id: Deck['id'] }
+export type UpdateDeckArgs = { id: Deck['id'] } & Partial<CreateDeckArgs>
 
 export type Tab = 'all' | 'my'

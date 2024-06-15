@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { Edit2Outline, PlayCircleOutline, TrashOutline } from '@/assets'
+import Logo from '@/assets/icons/person-outline'
 import {
   Button,
   Column,
@@ -18,6 +19,10 @@ import { formatDate } from '@/utils'
 import s from './decks-table.module.scss'
 
 const columns: Column[] = [
+  {
+    key: 'cover',
+    title: 'Cover',
+  },
   {
     key: 'name',
     title: 'Name',
@@ -66,6 +71,10 @@ export const DecksTable = ({
       <TableBody>
         {decks?.map(deck => (
           <TableRow key={deck.id}>
+            <TableCell>
+              {deck.cover && <img alt={'cover'} src={deck.cover} width={'30px'} />}
+              {!deck.cover && <Logo />}
+            </TableCell>
             <TableCell>
               <Typography as={Link} to={`/decks/${deck.id}`} variant={'body2'}>
                 {deck.name}

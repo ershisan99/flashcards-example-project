@@ -47,6 +47,7 @@ export const DecksPage = () => {
   const { currentData: decksCurrentData, data: decksData } = useGetDecksQuery({
     authorId,
     currentPage,
+    itemsPerPage: 3,
     maxCardsCount,
     minCardsCount,
     name: search,

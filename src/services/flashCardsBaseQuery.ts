@@ -55,8 +55,6 @@ export const baseQueryWithReauth: BaseQueryFn<
           extraOptions
         )) as any
 
-        console.log('refreshResult', refreshResult)
-
         if (refreshResult.data) {
           localStorage.setItem('accessToken', refreshResult.data.accessToken)
           localStorage.setItem('refreshToken', refreshResult.data.refreshToken)

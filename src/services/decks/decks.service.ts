@@ -14,11 +14,26 @@ const decksService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
       invalidatesTags: ['Decks'],
-      query: body => ({
-        body,
-        method: 'POST',
-        url: `v1/decks`,
-      }),
+      query: body => {
+        const { cover, isPrivate, name } = body
+
+        const formData = new FormData()
+
+        formData.append('name', name)
+
+        if (isPrivate) {
+          formData.append('isPrivate', isPrivate.toString())
+        }
+        if (cover) {
+          formData.append('cover', cover)
+        }
+
+        return {
+          body: formData,
+          method: 'POST',
+          url: `v1/decks`,
+        }
+      },
     }),
     deleteDeck: builder.mutation<void, { id: string }>({
       invalidatesTags: ['Decks'],
@@ -44,11 +59,28 @@ const decksService = flashcardsApi.injectEndpoints({
     }),
     updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
       invalidatesTags: ['Decks'],
-      query: ({ id, ...body }) => ({
-        body,
-        method: 'PATCH',
-        url: `v1/decks/${id}`,
-      }),
+      query: ({ cover, id, isPrivate, name }) => {
+        const formData = new FormData()
+
+        if (name) {
+          formData.append('name', name)
+        }
+        if (isPrivate) {
+          formData.append('isPrivate', isPrivate.toString())
+        }
+        if (cover) {
+          formData.append('cover', cover)
+        } else if (cover === null) {
+          // небходимо для зануления картинки
+          formData.append('cover', '')
+        }
+
+        return {
+          body: formData,
+          method: 'PATCH',
+          url: `v1/decks/${id}`,
+        }
+      },
     }),
   }),
 })
