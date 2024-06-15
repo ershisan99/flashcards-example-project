@@ -14,6 +14,30 @@ const decksService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
     createDeck: builder.mutation<DeckResponse, CreateDeckArgs>({
       invalidatesTags: ['Decks'],
+      async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
+        const cachedArgsForQuery = decksService.util.selectCachedArgsForQuery(
+          getState(),
+          'getDecks'
+        ) as GetDecksArgs[]
+
+        try {
+          const { data } = await queryFulfilled
+
+          cachedArgsForQuery.forEach(cachedArgs => {
+            dispatch(
+              decksService.util.updateQueryData('getDecks', cachedArgs, draft => {
+                if (cachedArgs.currentPage !== 1) {
+                  return
+                }
+                draft.items.unshift(data)
+                draft.items.pop()
+              })
+            )
+          })
+        } catch (e) {
+          console.log(e)
+        }
+      },
       query: body => {
         const { cover, isPrivate, name } = body
 
@@ -77,7 +101,7 @@ const decksService = flashcardsApi.injectEndpoints({
                   return
                 }
 
-                Object.assign(draft.items[itemToUpdateIndex], args)
+                draft.items[itemToUpdateIndex] = { ...draft.items[itemToUpdateIndex], ...args }
               })
             )
           )
